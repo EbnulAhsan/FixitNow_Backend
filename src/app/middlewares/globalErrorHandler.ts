@@ -1,4 +1,4 @@
-import { ErrorRequestHandler } from "express";
+import { ErrorRequestHandler, Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
 
 const globalErrorHandler: ErrorRequestHandler = (
