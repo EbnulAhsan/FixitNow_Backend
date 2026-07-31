@@ -1,19 +1,39 @@
 import { NextFunction, Request, Response } from "express";
+import { JwtPayload } from "jsonwebtoken";
 import { verifytoken } from "../utils/jwt";
 
-const auth = () => {
+type TUserRole = "CUSTOMER" | "TECHNICIAN" | "ADMIN";
+
+const auth = (...requiredRoles: TUserRole[]) => {
     return async (
         req: Request,
         res: Response,
         next: NextFunction
     ) => {
-        const token = req.headers.authorization;
+        const authorizationHeader = req.headers.authorization;
 
-        if (!token) {
+        if (!authorizationHeader) {
             throw new Error("You are not authorized");
         }
 
-        const verifiedUser = verifytoken(token);
+        const token = authorizationHeader.startsWith("Bearer ")
+            ? authorizationHeader.split(" ")[1]
+            : authorizationHeader;
+
+        const verifiedUser = verifytoken(token) as JwtPayload & {
+            id: string;
+            email: string;
+            role: TUserRole;
+        };
+
+        if (
+            requiredRoles.length &&
+            !requiredRoles.includes(verifiedUser.role)
+        ) {
+            throw new Error(
+                "You do not have permission to access this resource"
+            );
+        }
 
         (req as any).user = verifiedUser;
 
