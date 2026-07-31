@@ -50,7 +50,8 @@ const getAllServicesValidationSchema = z.object({
                     "Minimum price cannot be greater than maximum price",
                 path: ["minPrice"],
             }
-        ),
+        )
+        .default({}),
 });
 
 

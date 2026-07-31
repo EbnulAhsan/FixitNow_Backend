@@ -4,8 +4,8 @@ import { TService } from "./service.interface";
 type TServiceQuery = {
     searchTerm?: string;
     categoryId?: string;
-    minPrice?: number;
-    maxPrice?: number;
+    minPrice?: string | number;
+    maxPrice?: string | number;
 };
 
 const createService = async (
@@ -61,12 +61,18 @@ const createService = async (
 };
 
 const getAllServices = async (query: TServiceQuery) => {
-    const {
-        searchTerm,
-        categoryId,
-        minPrice,
-        maxPrice,
-    } = query;
+    const searchTerm = query.searchTerm;
+    const categoryId = query.categoryId;
+
+    const minPrice =
+        query.minPrice !== undefined
+            ? Number(query.minPrice)
+            : undefined;
+
+    const maxPrice =
+        query.maxPrice !== undefined
+            ? Number(query.maxPrice)
+            : undefined;
 
     const result = await prisma.service.findMany({
         where: {
