@@ -1,8 +1,8 @@
-import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
+import { ZodSchema } from "zod";
 
 const validateRequest =
-    (schema: z.ZodTypeAny) =>
+    (schema: ZodSchema) =>
         (req: Request, res: Response, next: NextFunction) => {
             schema.parse({
                 body: req.body,
@@ -10,3 +10,5 @@ const validateRequest =
 
             next();
         };
+
+export default validateRequest;

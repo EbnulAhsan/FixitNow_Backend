@@ -10,11 +10,13 @@ const registerValidationSchema = z.object({
             .string()
             .min(6, "Password must be at least 6 characters"),
 
-        phone: z.string().optional(),
+        role: z.enum(["CUSTOMER", "TECHNICIAN"]),
+
+        phone: z.string().min(11).optional(),
 
         address: z.string().optional(),
 
-        profilePhoto: z.string().optional(),
+        profilePhoto: z.string().url().optional(),
     }),
 });
 
