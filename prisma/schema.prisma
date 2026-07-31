@@ -13,16 +13,147 @@ enum Role {
   ADMIN
 }
 
+enum BookingStatus {
+  REQUESTED
+  ACCEPTED
+  DECLINED
+  PAID
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum PaymentProvider {
+  STRIPE
+  SSLCOMMERZ
+}
+
 model User {
-  id           String  @id @default(uuid())
-  name         String
-  email        String  @unique
-  password     String
-  phone        String?
-  address      String?
-  profilePhoto String?
-  role         Role    @default(CUSTOMER)
-  isDeleted    Boolean @default(false)
+  id                String             @id @default(uuid())
+  name              String
+  email             String             @unique
+  password          String
+  phone             String?
+  address           String?
+  profilePhoto      String?
+  role              Role               @default(CUSTOMER)
+  isDeleted         Boolean            @default(false)
+  isBlocked         Boolean            @default(false)
+  technicianProfile TechnicianProfile?
+  bookings          Booking[]
+  reviews           Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TechnicianProfile {
+  id String @id @default(uuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  bio        String?
+  skills     String[]
+  experience Int
+  hourlyRate Float
+
+  services Service[]
+  reviews  Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  services    Service[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id String @id @default(uuid())
+
+  title       String
+  description String
+
+  price Float
+
+  technicianId String
+  technician   TechnicianProfile @relation(fields: [technicianId], references: [id])
+
+  categoryId String
+  category   Category  @relation(fields: [categoryId], references: [id])
+  bookings   Booking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Booking {
+  id String @id @default(uuid())
+
+  customerId String
+  customer   User   @relation(fields: [customerId], references: [id])
+
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id])
+
+  bookingDate DateTime
+
+  status  BookingStatus @default(REQUESTED)
+  payment Payment?
+  review  Review?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id String @id @default(uuid())
+
+  transactionId String @unique
+
+  bookingId String  @unique
+  booking   Booking @relation(fields: [bookingId], references: [id])
+
+  amount Float
+
+  provider PaymentProvider
+
+  status PaymentStatus @default(PENDING)
+
+  paidAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id String @id @default(uuid())
+
+  customerId String
+  customer   User   @relation(fields: [customerId], references: [id])
+
+  technicianId String
+  technician   TechnicianProfile @relation(fields: [technicianId], references: [id])
+
+  bookingId String  @unique
+  booking   Booking @relation(fields: [bookingId], references: [id])
+
+  rating Int
+
+  comment String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
