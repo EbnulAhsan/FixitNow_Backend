@@ -3,3 +3,12 @@ node_modules
 .env
 
 /src/generated/prisma
+node_modules/
+.env
+dist/
+
+.agents/
+.claude/
+.windsurf/
+
+src/generated/
