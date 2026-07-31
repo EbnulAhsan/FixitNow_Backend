@@ -6,6 +6,14 @@ import { ServiceValidation } from "./service.validation";
 
 const router = express.Router();
 
+router.get(
+    "/",
+    validateRequest(
+        ServiceValidation.getAllServicesValidationSchema
+    ),
+    ServiceControllers.getAllServices
+);
+
 router.post(
     "/",
     auth("TECHNICIAN"),

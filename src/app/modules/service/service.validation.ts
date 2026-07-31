@@ -20,6 +20,43 @@ const createServiceValidationSchema = z.object({
     }),
 });
 
+const getAllServicesValidationSchema = z.object({
+    query: z
+        .object({
+            searchTerm: z.string().min(1).optional(),
+
+            categoryId: z
+                .string()
+                .uuid("Invalid category ID")
+                .optional(),
+
+            minPrice: z.coerce
+                .number()
+                .min(0, "Minimum price cannot be negative")
+                .optional(),
+
+            maxPrice: z.coerce
+                .number()
+                .min(0, "Maximum price cannot be negative")
+                .optional(),
+        })
+        .refine(
+            (data) =>
+                data.minPrice === undefined ||
+                data.maxPrice === undefined ||
+                data.minPrice <= data.maxPrice,
+            {
+                message:
+                    "Minimum price cannot be greater than maximum price",
+                path: ["minPrice"],
+            }
+        ),
+});
+
+
+
+
 export const ServiceValidation = {
     createServiceValidationSchema,
+    getAllServicesValidationSchema
 };
