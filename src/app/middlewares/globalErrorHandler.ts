@@ -21,6 +21,14 @@ const globalErrorHandler: ErrorRequestHandler = (
         }));
     }
 
+    if (err.code === "P2002") {
+        return res.status(409).json({
+            success: false,
+            message: "Data already exists",
+            errorDetails: err.meta,
+        });
+    }
+
     res.status(statusCode).json({
         success: false,
         message,
