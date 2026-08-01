@@ -31,4 +31,14 @@ router.get(
     ServiceControllers.getSingleService
 )
 
+// update 
+router.patch(
+    "/:id",
+    auth("TECHNICIAN"),
+    validateRequest(
+        ServiceValidation.updateServiceValidationSchema
+    ),
+    ServiceControllers.updateService
+);
+
 export const ServiceRoutes = router;

@@ -55,9 +55,49 @@ const getAllServicesValidationSchema = z.object({
 });
 
 
+// update service endpoint for technician
+const updateServiceValidationSchema = z.object({
+    body: z
+        .object({
+            title: z
+                .string()
+                .min(3, "Title must be at least 3 characters")
+                .optional(),
+
+            description: z
+                .string()
+                .min(10, "Description must be at least 10 characters")
+                .optional(),
+
+            price: z
+                .number()
+                .positive("Price must be greater than 0")
+                .optional(),
+
+            categoryId: z
+                .string()
+                .uuid("Invalid category ID")
+                .optional(),
+        })
+        .refine(
+            (data) => Object.keys(data).length > 0,
+            {
+                message: "At least one field is required to update service",
+            }
+        ),
+
+    params: z.object({
+        id: z.string().uuid("Invalid service ID"),
+    }),
+});
+
+
+
 
 
 export const ServiceValidation = {
     createServiceValidationSchema,
-    getAllServicesValidationSchema
+    getAllServicesValidationSchema,
+    updateServiceValidationSchema
 };
+
