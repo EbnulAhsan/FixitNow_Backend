@@ -33,6 +33,16 @@ router.patch(
     ReviewControllers.updateReview
 );
 
+router.delete(
+    "/:id",
+    auth("CUSTOMER"),
+    validateRequest(
+        ReviewValidation.deleteReviewValidationSchema
+    ),
+    ReviewControllers.deleteReview
+);
+
+
 
 
 

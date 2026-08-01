@@ -8,11 +8,11 @@ type TCreateReviewPayload = {
 };
 
 type TUpdateReviewPayload = {
-    
+
     rating?: number;
-    
+
     comment?: string;
-    
+
 };
 
 const createReviewIntoDB = async (
@@ -264,8 +264,44 @@ const updateReviewIntoDB = async (
 };
 
 
+//  delete reviews
+
+const deleteReviewFromDB = async (
+    reviewId: string,
+    customerId: string
+) => {
+    const review = await prisma.review.findUnique({
+        where: {
+            id: reviewId,
+        },
+    });
+
+    if (!review) {
+        throw new AppError(404, "Review not found");
+    }
+
+    // Only the review owner can delete the review
+    if (review.customerId !== customerId) {
+        throw new AppError(
+            403,
+            "You are not authorized to delete this review"
+        );
+    }
+
+    const result = await prisma.review.delete({
+        where: {
+            id: reviewId,
+        },
+    });
+
+    return result;
+};
+
+
+
 export const ReviewServices = {
     createReviewIntoDB,
     getTechnicianReviewsFromDB,
-    updateReviewIntoDB
+    updateReviewIntoDB,
+    deleteReviewFromDB
 };

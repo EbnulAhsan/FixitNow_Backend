@@ -73,8 +73,20 @@ const updateReviewValidationSchema = z.object({
 });
 
 
+// delete review validation
+
+const deleteReviewValidationSchema = z.object({
+    params: z.object({
+        id: z.uuid({
+            error: "Review ID must be a valid UUID",
+        }),
+    }),
+});
+
+
 export const ReviewValidation = {
     createReviewValidationSchema,
     getTechnicianReviewsValidationSchema,
-    updateReviewValidationSchema
+    updateReviewValidationSchema,
+    deleteReviewValidationSchema
 };
