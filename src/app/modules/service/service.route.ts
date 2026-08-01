@@ -41,4 +41,11 @@ router.patch(
     ServiceControllers.updateService
 );
 
+// for delete 
+router.delete(
+    "/:id",
+    auth("TECHNICIAN"),
+    ServiceControllers.deleteService
+);
+
 export const ServiceRoutes = router;
