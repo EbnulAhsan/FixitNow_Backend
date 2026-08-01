@@ -101,7 +101,63 @@ const getMyBookingsFromDB = async (customerId: string) => {
     return result;
 };
 
+// for technician booking 
+const getTechnicianBookingsFromDB = async (userId: string) => {
+    const technician = await prisma.technicianProfile.findUnique({
+        where: {
+            userId,
+        },
+    });
+
+    if (!technician) {
+        throw new AppError(404, "Technician profile not found");
+    }
+
+    const result = await prisma.booking.findMany({
+        where: {
+            service: {
+                technicianId: technician.id,
+            },
+        },
+        include: {
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true,
+                    profilePhoto: true,
+                },
+            },
+            service: {
+                include: {
+                    category: true,
+                },
+            },
+            payment: true,
+            review: true,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+
+    return result;
+};
+
+
+
+
+
+
+
+
+
+
+
 export const BookingServices = {
     createBookingIntoDB,
-    getMyBookingsFromDB
+    getMyBookingsFromDB,
+    getTechnicianBookingsFromDB
 };

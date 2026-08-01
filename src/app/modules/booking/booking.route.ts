@@ -22,4 +22,11 @@ router.get(
     BookingControllers.getMyBookings
 );
 
+
+router.get(
+    "/technician-bookings",
+    auth("TECHNICIAN"),
+    BookingControllers.getTechnicianBookings
+);
+
 export const BookingRoutes = router;
