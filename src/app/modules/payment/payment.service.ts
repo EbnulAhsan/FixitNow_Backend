@@ -199,7 +199,7 @@ const completePaymentIntoDB = async (
         throw new AppError(404, "Payment record not found");
     }
 
-    
+
     if (payment.status === "COMPLETED") {
         return payment;
     }
@@ -277,12 +277,12 @@ const failPaymentIntoDB = async (
         throw new AppError(404, "Payment record not found");
     }
 
-    
+
     if (payment.status === "FAILED") {
         return payment;
     }
 
-    
+
     if (payment.status === "COMPLETED") {
         return payment;
     }
@@ -300,8 +300,56 @@ const failPaymentIntoDB = async (
     return result;
 };
 
+// get my payment status
+
+const getMyPaymentsFromDB = async (
+    customerId: string
+) => {
+    const result = await prisma.payment.findMany({
+        where: {
+            booking: {
+                customerId,
+            },
+        },
+        include: {
+            booking: {
+                include: {
+                    service: {
+                        include: {
+                            category: true,
+                            technician: {
+                                include: {
+                                    user: {
+                                        select: {
+                                            id: true,
+                                            name: true,
+                                            email: true,
+                                            phone: true,
+                                            profilePhoto: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+
+    return result;
+};
+
+
+
+
+
 export const PaymentServices = {
     createPaymentIntentIntoDB,
     completePaymentIntoDB,
-    failPaymentIntoDB
+    failPaymentIntoDB,
+    getMyPaymentsFromDB
 };

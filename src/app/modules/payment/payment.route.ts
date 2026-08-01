@@ -19,6 +19,12 @@ router.post(
     PaymentControllers.createPaymentIntent
 );
 
+router.get(
+    "/my-payments",
+    auth("CUSTOMER"),
+    PaymentControllers.getMyPayments
+);
+
 router.post(
     "/webhook",
     PaymentControllers.handleStripeWebhook

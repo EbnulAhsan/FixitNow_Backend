@@ -77,6 +77,24 @@ const handleStripeWebhook = catchAsync(
     }
 );
 
+// get my payment controller
+
+const getMyPayments = catchAsync(
+    async (req: Request, res: Response) => {
+        const customerId = (req as any).user.id;
+
+        const result = await PaymentServices.getMyPaymentsFromDB(
+            customerId
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Payment history retrieved successfully",
+            data: result,
+        });
+    }
+);
+
 
 
 
@@ -84,5 +102,6 @@ const handleStripeWebhook = catchAsync(
 
 export const PaymentControllers = {
     createPaymentIntent,
-    handleStripeWebhook
+    handleStripeWebhook,
+    getMyPayments
 };
