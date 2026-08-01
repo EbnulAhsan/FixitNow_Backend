@@ -53,8 +53,36 @@ const cancelBookingValidationSchema = z.object({
     }),
 });
 
+
+// single booking validation
+const getSingleBookingValidationSchema = z.object({
+    params: z.object({
+        id: z.uuid({
+            error: "Booking ID must be a valid UUID",
+        }),
+    }),
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const BookingValidation = {
     createBookingValidationSchema,
     updateBookingStatusValidationSchema,
-    cancelBookingValidationSchema
+    cancelBookingValidationSchema,
+    getSingleBookingValidationSchema
 };

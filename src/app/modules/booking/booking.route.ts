@@ -48,4 +48,13 @@ router.patch(
     BookingControllers.cancelBooking
 );
 
+router.get(
+    "/:id",
+    auth("CUSTOMER", "TECHNICIAN"),
+    validateRequest(
+        BookingValidation.getSingleBookingValidationSchema
+    ),
+    BookingControllers.getSingleBooking
+);
+
 export const BookingRoutes = router;

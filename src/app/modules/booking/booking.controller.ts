@@ -98,6 +98,29 @@ const cancelBooking = catchAsync(
 );
 
 
+// single booking controller
+
+const getSingleBooking = catchAsync(
+    async (req: Request, res: Response) => {
+        const { id } = req.params;
+
+        const userId = (req as any).user.id;
+        const role = (req as any).user.role;
+
+        const result = await BookingServices.getSingleBookingFromDB(
+            id as string,
+            userId,
+            role
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Booking retrieved successfully",
+            data: result,
+        });
+    }
+);
+
 
 
 
@@ -115,5 +138,6 @@ export const BookingControllers = {
     getMyBookings,
     getTechnicianBookings,
     updateBookingStatus,
-    cancelBooking
+    cancelBooking,
+    getSingleBooking
 };

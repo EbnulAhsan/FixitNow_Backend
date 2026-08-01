@@ -16,6 +16,8 @@ type TUpdateBookingStatusPayload = {
     | "COMPLETED";
 }
 
+type TBookingUserRole = "CUSTOMER" | "TECHNICIAN";
+
 
 
 const createBookingIntoDB = async (
@@ -330,6 +332,76 @@ const cancelBookingIntoDB = async (
 };
 
 
+// single booking status
+
+
+const getSingleBookingFromDB = async (
+    bookingId: string,
+    userId: string,
+    role: TBookingUserRole
+) => {
+    const booking = await prisma.booking.findUnique({
+        where: {
+            id: bookingId,
+        },
+        include: {
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true,
+                    profilePhoto: true,
+                },
+            },
+            service: {
+                include: {
+                    category: true,
+                    technician: {
+                        include: {
+                            user: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    email: true,
+                                    phone: true,
+                                    profilePhoto: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            payment: true,
+            review: true,
+        },
+    });
+
+    if (!booking) {
+        throw new AppError(404, "Booking not found");
+    }
+
+    if (role === "CUSTOMER" && booking.customerId !== userId) {
+        throw new AppError(
+            403,
+            "You are not authorized to access this booking"
+        );
+    }
+
+    if (
+        role === "TECHNICIAN" &&
+        booking.service.technician.userId !== userId
+    ) {
+        throw new AppError(
+            403,
+            "You are not authorized to access this booking"
+        );
+    }
+
+    return booking;
+};
+
 
 
 
@@ -342,5 +414,6 @@ export const BookingServices = {
     getMyBookingsFromDB,
     getTechnicianBookingsFromDB,
     updateBookingStatusIntoDB,
-    cancelBookingIntoDB
+    cancelBookingIntoDB,
+    getSingleBookingFromDB
 };
