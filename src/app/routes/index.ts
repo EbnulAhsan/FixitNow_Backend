@@ -4,6 +4,7 @@ import { CategoryRoutes } from "../modules/category/category.route";
 import { ServiceRoutes } from "../modules/service/service.route";
 import path from "node:path";
 import { TechnicianRoutes } from "../modules/technician/technician.route";
+import { BookingRoutes } from "../modules/booking/booking.route";
 
 const router = express.Router();
 
@@ -23,6 +24,10 @@ const moduleRoutes = [
     {
         path: "/technician",
         route: TechnicianRoutes
+    },
+    {
+        path: "/bookings",
+        route:BookingRoutes
     }
 ];
 
