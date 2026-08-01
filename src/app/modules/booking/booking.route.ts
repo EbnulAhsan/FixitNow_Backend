@@ -29,4 +29,14 @@ router.get(
     BookingControllers.getTechnicianBookings
 );
 
+
+router.patch(
+    "/:id/status",
+    auth("TECHNICIAN"),
+    validateRequest(
+        BookingValidation.updateBookingStatusValidationSchema
+    ),
+    BookingControllers.updateBookingStatus
+);
+
 export const BookingRoutes = router;

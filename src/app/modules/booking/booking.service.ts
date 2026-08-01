@@ -6,6 +6,18 @@ type TCreateBookingPayload = {
     bookingDate: string;
 };
 
+type TUpdateBookingStatusPayload = {
+    status: | "ACCEPTED"
+
+    | "DECLINED"
+
+    | "IN_PROGRESS"
+
+    | "COMPLETED";
+}
+
+
+
 const createBookingIntoDB = async (
     customerId: string,
     payload: TCreateBookingPayload
@@ -147,6 +159,92 @@ const getTechnicianBookingsFromDB = async (userId: string) => {
 };
 
 
+// update booking status
+
+
+
+const updateBookingStatusIntoDB = async (
+    bookingId: string,
+    userId: string,
+    payload: TUpdateBookingStatusPayload
+) => {
+    const technician = await prisma.technicianProfile.findUnique({
+        where: {
+            userId,
+        },
+    });
+
+    if (!technician) {
+        throw new AppError(404, "Technician profile not found");
+    }
+
+    const booking = await prisma.booking.findUnique({
+        where: {
+            id: bookingId,
+        },
+        include: {
+            service: true,
+        },
+    });
+
+    if (!booking) {
+        throw new AppError(404, "Booking not found");
+    }
+
+    if (booking.service.technicianId !== technician.id) {
+        throw new AppError(
+            403,
+            "You are not authorized to update this booking"
+        );
+    }
+
+    const allowedTransitions: Record<string, string[]> = {
+        REQUESTED: ["ACCEPTED", "DECLINED"],
+        PAID: ["IN_PROGRESS"],
+        IN_PROGRESS: ["COMPLETED"],
+    };
+
+    const allowedNextStatuses =
+        allowedTransitions[booking.status] || [];
+
+    if (!allowedNextStatuses.includes(payload.status)) {
+        throw new AppError(
+            400,
+            `Booking status cannot be changed from ${booking.status} to ${payload.status}`
+        );
+    }
+
+    const result = await prisma.booking.update({
+        where: {
+            id: bookingId,
+        },
+        data: {
+            status: payload.status,
+        },
+        include: {
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true,
+                    profilePhoto: true,
+                },
+            },
+            service: {
+                include: {
+                    category: true,
+                },
+            },
+            payment: true,
+            review: true,
+        },
+    });
+
+    return result;
+};
+
 
 
 
@@ -159,5 +257,6 @@ const getTechnicianBookingsFromDB = async (userId: string) => {
 export const BookingServices = {
     createBookingIntoDB,
     getMyBookingsFromDB,
-    getTechnicianBookingsFromDB
+    getTechnicianBookingsFromDB,
+    updateBookingStatusIntoDB
 };

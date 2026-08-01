@@ -20,6 +20,31 @@ const createBookingValidationSchema = z.object({
     }),
 });
 
+
+// update booking validation
+const updateBookingStatusValidationSchema = z.object({
+    params: z.object({
+        id: z.uuid({
+            error: "Booking ID must be a valid UUID",
+        }),
+    }),
+
+    body: z.object({
+        status: z.enum(
+            [
+                "ACCEPTED",
+                "DECLINED",
+                "IN_PROGRESS",
+                "COMPLETED",
+            ],
+            {
+                error: "Invalid booking status",
+            }
+        ),
+    }),
+});
+
 export const BookingValidation = {
     createBookingValidationSchema,
+    updateBookingStatusValidationSchema
 };
