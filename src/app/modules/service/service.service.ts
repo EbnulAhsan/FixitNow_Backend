@@ -174,7 +174,7 @@ const getSingleServiceFromDB = async (id: string) => {
     return result;
 };
 
-
+// update service function
 const updateServiceIntoDB = async (
     serviceId: string,
     userId: string,
@@ -230,6 +230,46 @@ const updateServiceIntoDB = async (
 };
 
 
+//  delete service function
+
+const deleteServiceFromDB = async (
+    serviceId: string,
+    userId: string
+) => {
+    // Check whether the service exists or not 
+    const existingService = await prisma.service.findUnique({
+        where: {
+            id: serviceId,
+        },
+        include: {
+            technician: true,
+        },
+    });
+
+    if (!existingService) {
+        throw new AppError(404, "Service not found");
+    }
+
+    // Check whether the logged-in technician owns the service
+    if (existingService.technician.userId !== userId) {
+        throw new AppError(
+            403,
+            "You are not authorized to delete this service"
+        );
+    }
+
+    // Delete the service perfectly 
+    const result = await prisma.service.delete({
+        where: {
+            id: serviceId,
+        },
+    });
+
+    return result;
+};
+
+
+
 
 
 
@@ -237,5 +277,6 @@ export const ServiceServices = {
     createService,
     getAllServices,
     getSingleServiceFromDB,
-    updateServiceIntoDB
+    updateServiceIntoDB,
+    deleteServiceFromDB
 };
