@@ -161,8 +161,6 @@ const getTechnicianBookingsFromDB = async (userId: string) => {
 
 // update booking status
 
-
-
 const updateBookingStatusIntoDB = async (
     bookingId: string,
     userId: string,
@@ -245,6 +243,91 @@ const updateBookingStatusIntoDB = async (
     return result;
 };
 
+// cancel booking status 
+
+const cancelBookingIntoDB = async (
+    bookingId: string,
+    customerId: string
+) => {
+    const booking = await prisma.booking.findUnique({
+        where: {
+            id: bookingId,
+        },
+        include: {
+            service: {
+                include: {
+                    category: true,
+                    technician: true,
+                },
+            },
+        },
+    });
+
+    if (!booking) {
+        throw new AppError(404, "Booking not found");
+    }
+
+    // Ensure the logged-in customer owns the booking
+    if (booking.customerId !== customerId) {
+        throw new AppError(
+            403,
+            "You are not authorized to cancel this booking"
+        );
+    }
+
+    // Only REQUESTED or ACCEPTED bookings can be cancelled
+    const cancellableStatuses = ["REQUESTED", "ACCEPTED"];
+
+    if (!cancellableStatuses.includes(booking.status)) {
+        throw new AppError(
+            400,
+            `Booking with status ${booking.status} cannot be cancelled`
+        );
+    }
+
+    const result = await prisma.booking.update({
+        where: {
+            id: bookingId,
+        },
+        data: {
+            status: "CANCELLED",
+        },
+        include: {
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true,
+                    profilePhoto: true,
+                },
+            },
+            service: {
+                include: {
+                    category: true,
+                    technician: {
+                        include: {
+                            user: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    email: true,
+                                    phone: true,
+                                    profilePhoto: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            payment: true,
+            review: true,
+        },
+    });
+
+    return result;
+};
 
 
 
@@ -258,5 +341,6 @@ export const BookingServices = {
     createBookingIntoDB,
     getMyBookingsFromDB,
     getTechnicianBookingsFromDB,
-    updateBookingStatusIntoDB
+    updateBookingStatusIntoDB,
+    cancelBookingIntoDB
 };
