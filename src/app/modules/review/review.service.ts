@@ -7,6 +7,14 @@ type TCreateReviewPayload = {
     comment?: string;
 };
 
+type TUpdateReviewPayload = {
+    
+    rating?: number;
+    
+    comment?: string;
+    
+};
+
 const createReviewIntoDB = async (
     customerId: string,
     payload: TCreateReviewPayload
@@ -190,7 +198,74 @@ const getTechnicianReviewsFromDB = async (
     };
 };
 
+// update Reviews
+
+
+const updateReviewIntoDB = async (
+    reviewId: string,
+    customerId: string,
+    payload: TUpdateReviewPayload
+) => {
+    const review = await prisma.review.findUnique({
+        where: {
+            id: reviewId,
+        },
+    });
+
+    if (!review) {
+        throw new AppError(404, "Review not found");
+    }
+
+    // Only the review owner can update the review
+    if (review.customerId !== customerId) {
+        throw new AppError(
+            403,
+            "You are not authorized to update this review"
+        );
+    }
+
+    const result = await prisma.review.update({
+        where: {
+            id: reviewId,
+        },
+        data: payload,
+        include: {
+            customer: {
+                select: {
+                    id: true,
+                    name: true,
+                    profilePhoto: true,
+                },
+            },
+            technician: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            profilePhoto: true,
+                        },
+                    },
+                },
+            },
+            booking: {
+                include: {
+                    service: {
+                        include: {
+                            category: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    return result;
+};
+
+
 export const ReviewServices = {
     createReviewIntoDB,
-    getTechnicianReviewsFromDB
+    getTechnicianReviewsFromDB,
+    updateReviewIntoDB
 };

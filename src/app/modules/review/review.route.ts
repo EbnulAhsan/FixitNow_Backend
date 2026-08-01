@@ -23,4 +23,17 @@ router.get(
     ReviewControllers.getTechnicianReviews
 );
 
+
+router.patch(
+    "/:id",
+    auth("CUSTOMER"),
+    validateRequest(
+        ReviewValidation.updateReviewValidationSchema
+    ),
+    ReviewControllers.updateReview
+);
+
+
+
+
 export const ReviewRoutes = router;
