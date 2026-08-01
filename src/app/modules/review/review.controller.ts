@@ -19,6 +19,29 @@ const createReview = catchAsync(
     }
 );
 
+// get technician review controller
+
+const getTechnicianReviews = catchAsync(
+    async (req: Request, res: Response) => {
+        const technicianId = req.params.technicianId as string;
+
+        const result =
+            await ReviewServices.getTechnicianReviewsFromDB(
+                technicianId
+            );
+
+        res.status(200).json({
+            success: true,
+            message: "Technician reviews retrieved successfully",
+            data: result,
+        });
+    }
+);
+
+
+
+
 export const ReviewControllers = {
     createReview,
+    getTechnicianReviews
 };

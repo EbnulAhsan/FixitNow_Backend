@@ -103,6 +103,94 @@ const createReviewIntoDB = async (
     return result;
 };
 
+
+// get technician review from db
+
+const getTechnicianReviewsFromDB = async (
+    technicianId: string
+) => {
+    const technician = await prisma.technicianProfile.findUnique({
+        where: {
+            id: technicianId,
+        },
+        select: {
+            id: true,
+            bio: true,
+            skills: true,
+            experience: true,
+            hourlyRate: true,
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    profilePhoto: true,
+                },
+            },
+        },
+    });
+
+    if (!technician) {
+        throw new AppError(
+            404,
+            "Technician profile not found"
+        );
+    }
+
+    const [reviews, ratingSummary] = await prisma.$transaction([
+        prisma.review.findMany({
+            where: {
+                technicianId,
+            },
+            include: {
+                customer: {
+                    select: {
+                        id: true,
+                        name: true,
+                        profilePhoto: true,
+                    },
+                },
+                booking: {
+                    include: {
+                        service: {
+                            select: {
+                                id: true,
+                                title: true,
+                                description: true,
+                                price: true,
+                            },
+                        },
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        }),
+
+        prisma.review.aggregate({
+            where: {
+                technicianId,
+            },
+            _avg: {
+                rating: true,
+            },
+            _count: {
+                id: true,
+            },
+        }),
+    ]);
+
+    return {
+        technician,
+        averageRating: Number(
+            (ratingSummary._avg.rating ?? 0).toFixed(2)
+        ),
+        totalReviews: ratingSummary._count.id,
+        reviews,
+    };
+};
+
 export const ReviewServices = {
     createReviewIntoDB,
+    getTechnicianReviewsFromDB
 };

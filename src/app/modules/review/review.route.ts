@@ -15,4 +15,12 @@ router.post(
     ReviewControllers.createReview
 );
 
+router.get(
+    "/technician/:technicianId",
+    validateRequest(
+        ReviewValidation.getTechnicianReviewsValidationSchema
+    ),
+    ReviewControllers.getTechnicianReviews
+);
+
 export const ReviewRoutes = router;

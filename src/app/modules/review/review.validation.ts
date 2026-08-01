@@ -25,6 +25,17 @@ const createReviewValidationSchema = z.object({
     }),
 });
 
+
+// get technician reviews validation
+const getTechnicianReviewsValidationSchema = z.object({
+    params: z.object({
+        technicianId: z.uuid({
+            error: "Technician ID must be a valid UUID",
+        }),
+    }),
+});
+
 export const ReviewValidation = {
     createReviewValidationSchema,
+    getTechnicianReviewsValidationSchema
 };
