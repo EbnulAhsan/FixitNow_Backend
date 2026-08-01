@@ -123,6 +123,92 @@ const createPaymentIntentIntoDB = async (
     };
 };
 
+// complete payment status
+
+const completePaymentIntoDB = async (
+    paymentIntentId: string,
+    amountReceived: number,
+    currency: string
+) => {
+    const payment = await prisma.payment.findUnique({
+        where: {
+            transactionId: paymentIntentId,
+        },
+        include: {
+            booking: {
+                include: {
+                    service: true,
+                },
+            },
+        },
+    });
+
+    if (!payment) {
+        throw new AppError(404, "Payment record not found");
+    }
+
+    
+    if (payment.status === "COMPLETED") {
+        return payment;
+    }
+
+    if (payment.status === "FAILED") {
+        throw new AppError(
+            400,
+            "Failed payment cannot be marked as completed"
+        );
+    }
+
+    const expectedAmount = Math.round(payment.amount * 100);
+
+    if (amountReceived !== expectedAmount) {
+        throw new AppError(
+            400,
+            "Stripe payment amount does not match the booking amount"
+        );
+    }
+
+    if (currency.toLowerCase() !== "bdt") {
+        throw new AppError(
+            400,
+            "Stripe payment currency does not match"
+        );
+    }
+
+    if (payment.booking.status !== "ACCEPTED") {
+        throw new AppError(
+            400,
+            `Payment cannot be completed for booking with status ${payment.booking.status}`
+        );
+    }
+
+    const result = await prisma.$transaction(async (transactionClient) => {
+        const updatedPayment = await transactionClient.payment.update({
+            where: {
+                id: payment.id,
+            },
+            data: {
+                status: "COMPLETED",
+                paidAt: new Date(),
+            },
+        });
+
+        await transactionClient.booking.update({
+            where: {
+                id: payment.bookingId,
+            },
+            data: {
+                status: "PAID",
+            },
+        });
+
+        return updatedPayment;
+    });
+
+    return result;
+};
+
 export const PaymentServices = {
     createPaymentIntentIntoDB,
+    completePaymentIntoDB
 };

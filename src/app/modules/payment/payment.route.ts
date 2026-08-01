@@ -19,4 +19,9 @@ router.post(
     PaymentControllers.createPaymentIntent
 );
 
+router.post(
+    "/webhook",
+    PaymentControllers.handleStripeWebhook
+);
+
 export const PaymentRoutes = router;
