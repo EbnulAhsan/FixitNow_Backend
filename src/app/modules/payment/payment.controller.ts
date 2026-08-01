@@ -62,12 +62,22 @@ const handleStripeWebhook = catchAsync(
             );
         }
 
+        if (event.type === "payment_intent.payment_failed") {
+            const paymentIntent = event.data.object;
+
+            await PaymentServices.failPaymentIntoDB(
+                paymentIntent.id
+            );
+        }
+
         res.status(200).json({
             success: true,
             message: "Stripe webhook received successfully",
         });
     }
 );
+
+
 
 
 

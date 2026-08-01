@@ -28,7 +28,7 @@ const createPaymentIntentIntoDB = async (
         throw new AppError(404, "Booking not found");
     }
 
-    // Only the booking owner can initiate payment and othes will not able to do that 
+    // Only the booking owner can initiate payment
     if (booking.customerId !== customerId) {
         throw new AppError(
             403,
@@ -36,7 +36,7 @@ const createPaymentIntentIntoDB = async (
         );
     }
 
-    // Payment is allowed only after technician accepts the booking otherwise its not working 
+    // Payment is allowed only after the technician accepts the booking
     if (booking.status !== "ACCEPTED") {
         throw new AppError(
             400,
@@ -44,8 +44,9 @@ const createPaymentIntentIntoDB = async (
         );
     }
 
-    // Prevent duplicate payment records and charges perfectly
+    // Handle an existing payment record
     if (booking.payment) {
+        // Completed payment must not be paid again
         if (booking.payment.status === "COMPLETED") {
             throw new AppError(
                 400,
@@ -53,11 +54,19 @@ const createPaymentIntentIntoDB = async (
             );
         }
 
+        // Reuse the existing pending PaymentIntent
         if (booking.payment.status === "PENDING") {
             const existingPaymentIntent =
                 await stripe.paymentIntents.retrieve(
                     booking.payment.transactionId
                 );
+
+            if (!existingPaymentIntent.client_secret) {
+                throw new AppError(
+                    500,
+                    "Existing Stripe payment intent has no client secret"
+                );
+            }
 
             return {
                 paymentId: booking.payment.id,
@@ -69,14 +78,57 @@ const createPaymentIntentIntoDB = async (
             };
         }
 
-        throw new AppError(
-            400,
-            "The previous payment attempt failed"
-        );
+        // Create a new PaymentIntent after a failed attempt
+        if (booking.payment.status === "FAILED") {
+            const retryPaymentIntent =
+                await stripe.paymentIntents.create({
+                    amount: Math.round(booking.service.price * 100),
+                    currency: "bdt",
+                    automatic_payment_methods: {
+                        enabled: true,
+                    },
+                    metadata: {
+                        bookingId: booking.id,
+                        customerId,
+                        serviceId: booking.serviceId,
+                    },
+                });
+
+            if (!retryPaymentIntent.client_secret) {
+                throw new AppError(
+                    500,
+                    "Unable to create Stripe payment intent"
+                );
+            }
+
+            const updatedPayment = await prisma.payment.update({
+                where: {
+                    id: booking.payment.id,
+                },
+                data: {
+                    transactionId: retryPaymentIntent.id,
+                    amount: booking.service.price,
+                    provider: "STRIPE",
+                    status: "PENDING",
+                    paidAt: null,
+                },
+            });
+
+            return {
+                paymentId: updatedPayment.id,
+                transactionId: updatedPayment.transactionId,
+                clientSecret: retryPaymentIntent.client_secret,
+                amount: updatedPayment.amount,
+                currency: retryPaymentIntent.currency,
+                status: updatedPayment.status,
+            };
+        }
     }
 
-    // Stripe expects two-decimal currencies in their smallest unit.
-    const stripeAmount = Math.round(booking.service.price * 100);
+    // Stripe expects the amount in the smallest currency unit
+    const stripeAmount = Math.round(
+        booking.service.price * 100
+    );
 
     const paymentIntent = await stripe.paymentIntents.create(
         {
@@ -208,7 +260,48 @@ const completePaymentIntoDB = async (
     return result;
 };
 
+// failed payment status 
+const failPaymentIntoDB = async (
+    paymentIntentId: string
+) => {
+    const payment = await prisma.payment.findUnique({
+        where: {
+            transactionId: paymentIntentId,
+        },
+        include: {
+            booking: true,
+        },
+    });
+
+    if (!payment) {
+        throw new AppError(404, "Payment record not found");
+    }
+
+    
+    if (payment.status === "FAILED") {
+        return payment;
+    }
+
+    
+    if (payment.status === "COMPLETED") {
+        return payment;
+    }
+
+    const result = await prisma.payment.update({
+        where: {
+            id: payment.id,
+        },
+        data: {
+            status: "FAILED",
+            paidAt: null,
+        },
+    });
+
+    return result;
+};
+
 export const PaymentServices = {
     createPaymentIntentIntoDB,
-    completePaymentIntoDB
+    completePaymentIntoDB,
+    failPaymentIntoDB
 };
