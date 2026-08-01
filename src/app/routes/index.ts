@@ -7,6 +7,7 @@ import { TechnicianRoutes } from "../modules/technician/technician.route";
 import { BookingRoutes } from "../modules/booking/booking.route";
 import { PaymentRoutes } from "../modules/payment/payment.route";
 import { ReviewRoutes } from "../modules/review/review.route";
+import { AdminRoutes } from "../modules/admin/admin.route";
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ const moduleRoutes = [
     },
     {
         path: "/services",
-      route: ServiceRoutes  
+        route: ServiceRoutes
     },
     {
         path: "/technician",
@@ -29,7 +30,7 @@ const moduleRoutes = [
     },
     {
         path: "/bookings",
-        route:BookingRoutes
+        route: BookingRoutes
     },
     {
         path: "/payments",
@@ -38,6 +39,10 @@ const moduleRoutes = [
     {
         path: "/reviews",
         route: ReviewRoutes
+    },
+    {
+        path: "/admin",
+        route: AdminRoutes
     }
 ];
 
