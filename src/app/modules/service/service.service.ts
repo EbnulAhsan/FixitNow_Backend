@@ -1,6 +1,7 @@
 import prisma from "../../utils/prisma";
 import { TService } from "./service.interface";
 import httpStatus from "http-status";
+import { AppError } from "../../utils/appError";
 
 type TServiceQuery = {
     searchTerm?: string;
@@ -159,9 +160,8 @@ const getSingleServiceFromDB = async (id: string) => {
             technician: true,
         }
     })
-
     if (!result) {
-        throw new Error("Service not found");
+        throw new AppError(404, "Service not found");
     }
 
     return result;
