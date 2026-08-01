@@ -1,5 +1,6 @@
 import prisma from "../../utils/prisma";
 import { TService } from "./service.interface";
+import httpStatus from "http-status";
 
 type TServiceQuery = {
     searchTerm?: string;
@@ -142,7 +143,36 @@ const getAllServices = async (query: TServiceQuery) => {
     return result;
 };
 
+
+
+// get single service by id
+
+
+const getSingleServiceFromDB = async (id: string) => {
+    const result = await prisma.service.findUnique({
+        where: {
+            id,
+        },
+
+        include: {
+            category: true,
+            technician: true,
+        }
+    })
+
+    if (!result) {
+        throw new Error("Service not found");
+    }
+
+    return result;
+};
+
+
+
+
+
 export const ServiceServices = {
     createService,
     getAllServices,
+    getSingleServiceFromDB,
 };
