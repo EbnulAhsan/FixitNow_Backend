@@ -24,6 +24,16 @@ const getAllUsersValidationSchema = z.object({
     }),
 });
 
+
+const userIdParamsValidationSchema = z.object({
+    params: z.object({
+        id: z.uuid({
+            error: "User ID must be a valid UUID",
+        }),
+    }),
+});
+
 export const AdminValidation = {
     getAllUsersValidationSchema,
+    userIdParamsValidationSchema
 };

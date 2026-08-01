@@ -2,6 +2,11 @@ import bcrypt from "bcrypt";
 import prisma from "../../utils/prisma";
 import config from "../../config";
 import jwt from "jsonwebtoken";
+import { AppError } from "../../utils/appError";
+
+
+
+
 
 const registerUser = async (payload: any) => {
     const existingUser = await prisma.user.findUnique({
@@ -43,6 +48,14 @@ const loginUser = async (payload: {
 
     if (!user) {
         throw new Error("User not found");
+    }
+
+    if (user.isDeleted) {
+        throw new AppError(403, "Your account has been deleted");
+    }
+
+    if (user.isBlocked) {
+        throw new AppError(403, "Your account has been blocked");
     }
 
     const isPasswordMatched = await bcrypt.compare(

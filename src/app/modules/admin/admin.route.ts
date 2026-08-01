@@ -15,4 +15,13 @@ router.get(
     AdminControllers.getAllUsers
 );
 
+router.patch(
+    "/users/:id/block",
+    auth("ADMIN"),
+    validateRequest(
+        AdminValidation.userIdParamsValidationSchema
+    ),
+    AdminControllers.blockUser
+);
+
 export const AdminRoutes = router;
