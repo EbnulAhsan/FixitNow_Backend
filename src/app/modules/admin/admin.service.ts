@@ -220,6 +220,64 @@ const unblockUserIntoDB = async (id: string) => {
 };
 
 
+// softdelete user
+
+// Soft delete user
+const softDeleteUserIntoDB = async (
+    userId: string,
+    adminId: string
+) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+    });
+
+    if (!user) {
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            "User not found"
+        );
+    }
+
+    if (user.id === adminId) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Admin cannot delete their own account"
+        );
+    }
+
+    if (user.isDeleted) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "User is already deleted"
+        );
+    }
+
+    const result = await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            isDeleted: true,
+            isBlocked: true,
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            isDeleted: true,
+            isBlocked: true,
+            createdAt: true,
+            updatedAt: true,
+        },
+    });
+
+    return result;
+};
+
+
 
 
 
@@ -234,5 +292,6 @@ const unblockUserIntoDB = async (id: string) => {
 export const AdminServices = {
     getAllUsersFromDB,
     blockUserIntoDB,
-    unblockUserIntoDB
+    unblockUserIntoDB,
+    softDeleteUserIntoDB
 };

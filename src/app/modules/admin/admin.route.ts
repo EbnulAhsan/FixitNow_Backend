@@ -34,4 +34,16 @@ router.patch(
     AdminControllers.unblockUser
 );
 
+
+
+router.patch(
+    "/users/:id/soft-delete",
+    auth("ADMIN"),
+    validateRequest(
+        AdminValidation.userIdParamsValidationSchema
+    ),
+    AdminControllers.softDeleteUser
+);
+
+
 export const AdminRoutes = router;
