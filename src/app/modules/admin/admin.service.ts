@@ -1,6 +1,7 @@
 import { Prisma, Role } from "@prisma/client";
 import prisma from "../../utils/prisma";
 import { AppError } from "../../utils/appError";
+import httpStatus from "http-status"
 
 type TGetAllUsersQuery = {
     searchTerm?: string;
@@ -105,7 +106,7 @@ const getAllUsersFromDB = async (
     return result;
 };
 
-
+//  block status
 
 const blockUserIntoDB = async (
     userId: string,
@@ -174,7 +175,64 @@ const blockUserIntoDB = async (
     return result;
 };
 
+//  unblock status
+
+const unblockUserIntoDB = async (id: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id,
+        },
+    });
+
+    if (!user) {
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            "User not found"
+        );
+    }
+
+    if (!user.isBlocked) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "User is already unblocked"
+        );
+    }
+
+    const result = await prisma.user.update({
+        where: {
+            id,
+        },
+        data: {
+            isBlocked: false,
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            isBlocked: true,
+            createdAt: true,
+            updatedAt: true,
+        },
+    });
+
+    return result;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const AdminServices = {
     getAllUsersFromDB,
-    blockUserIntoDB
+    blockUserIntoDB,
+    unblockUserIntoDB
 };

@@ -24,4 +24,14 @@ router.patch(
     AdminControllers.blockUser
 );
 
+
+router.patch(
+    "/users/:id/unblock",
+    auth("ADMIN"),
+    validateRequest(
+        AdminValidation.userIdParamsValidationSchema
+    ),
+    AdminControllers.unblockUser
+);
+
 export const AdminRoutes = router;
