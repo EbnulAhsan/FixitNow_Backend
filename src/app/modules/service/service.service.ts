@@ -1,6 +1,6 @@
 import prisma from "../../utils/prisma";
 import { TService } from "./service.interface";
-import httpStatus from "http-status";
+
 import { AppError } from "../../utils/appError";
 
 type TServiceQuery = {
@@ -21,15 +21,56 @@ const createService = async (
     userId: string,
     payload: TService
 ) => {
-    const technicianProfile =
-        await prisma.technicianProfile.findUnique({
-            where: {
-                userId,
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+        select: {
+            id: true,
+            role: true,
+            isBlocked: true,
+            isDeleted: true,
+            technicianProfile: {
+                select: {
+                    id: true,
+                },
             },
-        });
+        },
+    });
 
-    if (!technicianProfile) {
-        throw new Error("Technician profile not found");
+    if (!user) {
+        throw new AppError(
+            404,
+            "User not found"
+        );
+    }
+
+    if (user.isDeleted) {
+        throw new AppError(
+            403,
+            "Your account has been deleted"
+        );
+    }
+
+    if (user.isBlocked) {
+        throw new AppError(
+            403,
+            "Your account has been blocked"
+        );
+    }
+
+    if (user.role !== "TECHNICIAN") {
+        throw new AppError(
+            403,
+            "Only technicians can create services"
+        );
+    }
+
+    if (!user.technicianProfile) {
+        throw new AppError(
+            404,
+            "Technician profile not found. Please create a technician profile first"
+        );
     }
 
     const category = await prisma.category.findUnique({
@@ -39,13 +80,19 @@ const createService = async (
     });
 
     if (!category) {
-        throw new Error("Category not found");
+        throw new AppError(
+            404,
+            "Category not found"
+        );
     }
 
     const result = await prisma.service.create({
         data: {
-            ...payload,
-            technicianId: technicianProfile.id,
+            title: payload.title.trim(),
+            description: payload.description.trim(),
+            price: payload.price,
+            categoryId: payload.categoryId,
+            technicianId: user.technicianProfile.id,
         },
         include: {
             category: true,
@@ -68,6 +115,9 @@ const createService = async (
 
     return result;
 };
+
+
+
 
 const getAllServices = async (query: TServiceQuery) => {
     const searchTerm = query.searchTerm;
@@ -236,21 +286,27 @@ const deleteServiceFromDB = async (
     serviceId: string,
     userId: string
 ) => {
-    // Check whether the service exists or not 
     const existingService = await prisma.service.findUnique({
         where: {
             id: serviceId,
         },
         include: {
             technician: true,
+            _count: {
+                select: {
+                    bookings: true,
+                },
+            },
         },
     });
 
     if (!existingService) {
-        throw new AppError(404, "Service not found");
+        throw new AppError(
+            404,
+            "Service not found"
+        );
     }
 
-    // Check whether the logged-in technician owns the service
     if (existingService.technician.userId !== userId) {
         throw new AppError(
             403,
@@ -258,7 +314,13 @@ const deleteServiceFromDB = async (
         );
     }
 
-    // Delete the service perfectly 
+    if (existingService._count.bookings > 0) {
+        throw new AppError(
+            409,
+            "Service cannot be deleted because it has associated bookings"
+        );
+    }
+
     const result = await prisma.service.delete({
         where: {
             id: serviceId,

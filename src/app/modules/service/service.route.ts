@@ -23,15 +23,16 @@ router.post(
     ServiceControllers.createService
 );
 
-
-//   get a single service id
-
+// Get a single service
 router.get(
     "/:id",
+    validateRequest(
+        ServiceValidation.serviceIdParamsValidationSchema
+    ),
     ServiceControllers.getSingleService
-)
+);
 
-// update 
+// Update a service
 router.patch(
     "/:id",
     auth("TECHNICIAN"),
@@ -41,11 +42,16 @@ router.patch(
     ServiceControllers.updateService
 );
 
-// for delete 
 router.delete(
     "/:id",
     auth("TECHNICIAN"),
+    validateRequest(
+        ServiceValidation.serviceIdParamsValidationSchema
+    ),
     ServiceControllers.deleteService
 );
+
+
+
 
 export const ServiceRoutes = router;

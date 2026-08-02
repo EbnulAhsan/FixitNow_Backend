@@ -92,12 +92,23 @@ const updateServiceValidationSchema = z.object({
 });
 
 
+// Service ID parameter validation
+const serviceIdParamsValidationSchema = z.object({
+    params: z.object({
+        id: z.string().uuid({
+            message: "Service ID must be a valid UUID",
+        }),
+    }),
+});
+
+
 
 
 
 export const ServiceValidation = {
     createServiceValidationSchema,
     getAllServicesValidationSchema,
-    updateServiceValidationSchema
+    updateServiceValidationSchema,
+    serviceIdParamsValidationSchema
 };
 
