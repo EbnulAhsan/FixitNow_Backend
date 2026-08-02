@@ -526,12 +526,6 @@ const getAllBookingsForAdminFromDB = async (
 };
 
 
-
-
-
-
-
-
 export const BookingServices = {
     createBookingIntoDB,
     getMyBookingsFromDB,

@@ -117,20 +117,6 @@ const getAllBookingsForAdminValidationSchema = z.object({
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const BookingValidation = {
     createBookingValidationSchema,
     updateBookingStatusValidationSchema,
