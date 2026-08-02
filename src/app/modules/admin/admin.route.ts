@@ -5,6 +5,9 @@ import { AdminControllers } from "./admin.controller";
 import { AdminValidation } from "./admin.validation";
 import { BookingControllers } from "../booking/booking.controller";
 import { BookingValidation } from "../booking/booking.validation";
+import { PaymentControllers } from "../payment/payment.controller";
+import { PaymentValidation } from "../payment/payment.validation";
+
 
 const router = express.Router();
 
@@ -54,6 +57,16 @@ router.get(
         BookingValidation.getAllBookingsForAdminValidationSchema
     ),
     BookingControllers.getAllBookingsForAdmin
+);
+
+
+router.get(
+    "/payments",
+    auth("ADMIN"),
+    validateRequest(
+        PaymentValidation.getAllPaymentsForAdminValidationSchema
+    ),
+    PaymentControllers.getAllPaymentsForAdmin
 );
 
 

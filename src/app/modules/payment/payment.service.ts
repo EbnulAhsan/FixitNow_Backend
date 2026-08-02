@@ -5,9 +5,18 @@
 import prisma from "../../utils/prisma";
 import { AppError } from "../../utils/appError";
 import stripe from "../../utils/stripe";
+import { Prisma } from "@prisma/client";
 
 type TCreatePaymentIntentPayload = {
     bookingId: string;
+};
+
+type TAdminPaymentQuery = {
+    searchTerm?: string;
+    status?: "PENDING" | "COMPLETED" | "FAILED";
+    provider?: "STRIPE";
+    page?: string;
+    limit?: string;
 };
 
 const createPaymentIntentIntoDB = async (
@@ -343,6 +352,129 @@ const getMyPaymentsFromDB = async (
     return result;
 };
 
+// Get all payments for admin
+const getAllPaymentsForAdminFromDB = async (
+    query: TAdminPaymentQuery
+) => {
+    const page = Math.max(Number(query.page) || 1, 1);
+
+    const limit = Math.min(
+        Math.max(Number(query.limit) || 10, 1),
+        100
+    );
+
+    const skip = (page - 1) * limit;
+    const searchTerm = query.searchTerm?.trim();
+
+    const whereConditions: Prisma.PaymentWhereInput = {};
+
+    if (query.status) {
+        whereConditions.status = query.status;
+    }
+
+    if (query.provider) {
+        whereConditions.provider = query.provider;
+    }
+
+    if (searchTerm) {
+        whereConditions.OR = [
+            {
+                transactionId: {
+                    contains: searchTerm,
+                    mode: "insensitive",
+                },
+            },
+            {
+                booking: {
+                    customer: {
+                        name: {
+                            contains: searchTerm,
+                            mode: "insensitive",
+                        },
+                    },
+                },
+            },
+            {
+                booking: {
+                    customer: {
+                        email: {
+                            contains: searchTerm,
+                            mode: "insensitive",
+                        },
+                    },
+                },
+            },
+        ];
+    }
+
+    const [payments, total] = await prisma.$transaction([
+        prisma.payment.findMany({
+            where: whereConditions,
+            skip,
+            take: limit,
+
+            include: {
+                booking: {
+                    include: {
+                        customer: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                                phone: true,
+                                address: true,
+                                profilePhoto: true,
+                                isBlocked: true,
+                                isDeleted: true,
+                            },
+                        },
+
+                        service: {
+                            include: {
+                                category: true,
+
+                                technician: {
+                                    include: {
+                                        user: {
+                                            select: {
+                                                id: true,
+                                                name: true,
+                                                email: true,
+                                                phone: true,
+                                                profilePhoto: true,
+                                                isBlocked: true,
+                                                isDeleted: true,
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+
+            orderBy: {
+                createdAt: "desc",
+            },
+        }),
+
+        prisma.payment.count({
+            where: whereConditions,
+        }),
+    ]);
+
+    return {
+        meta: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit),
+        },
+        data: payments,
+    };
+};
+
 
 
 
@@ -351,5 +483,6 @@ export const PaymentServices = {
     createPaymentIntentIntoDB,
     completePaymentIntoDB,
     failPaymentIntoDB,
-    getMyPaymentsFromDB
+    getMyPaymentsFromDB,
+    getAllPaymentsForAdminFromDB
 };

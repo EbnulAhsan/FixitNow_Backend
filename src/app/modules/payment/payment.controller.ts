@@ -96,6 +96,24 @@ const getMyPayments = catchAsync(
 );
 
 
+// Get all payments for admin
+const getAllPaymentsForAdmin = catchAsync(
+    async (req: Request, res: Response) => {
+        const result =
+            await PaymentServices.getAllPaymentsForAdminFromDB(
+                req.query
+            );
+
+        res.status(200).json({
+            success: true,
+            message: "All payments retrieved successfully",
+            meta: result.meta,
+            data: result.data,
+        });
+    }
+);
+
+
 
 
 
@@ -103,5 +121,6 @@ const getMyPayments = catchAsync(
 export const PaymentControllers = {
     createPaymentIntent,
     handleStripeWebhook,
-    getMyPayments
+    getMyPayments,
+    getAllPaymentsForAdmin
 };
