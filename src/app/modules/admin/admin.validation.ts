@@ -2,7 +2,13 @@ import { z } from "zod";
 
 const getAllUsersValidationSchema = z.object({
     query: z.object({
-        searchTerm: z.string().trim().optional(),
+        searchTerm: z
+            .string()
+            .trim()
+            .min(1, {
+                message: "Search term cannot be empty",
+            })
+            .optional(),
 
         role: z
             .enum(["CUSTOMER", "TECHNICIAN", "ADMIN"], {
