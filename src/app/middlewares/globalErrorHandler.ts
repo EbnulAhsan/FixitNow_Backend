@@ -1,4 +1,4 @@
-import { ErrorRequestHandler, Request, Response, NextFunction } from "express";
+import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 
 const globalErrorHandler: ErrorRequestHandler = (
@@ -7,9 +7,13 @@ const globalErrorHandler: ErrorRequestHandler = (
     res,
     next
 ) => {
-    let statusCode = 500;
-    let message = err.message || "Something went wrong";
-    let errorDetails = err;
+    let statusCode = err.statusCode || 500;
+    let message =
+        err.message || "Internal Server Error";
+
+    let errorDetails: unknown = {
+        statusCode,
+    };
 
     if (err instanceof ZodError) {
         statusCode = 400;
@@ -19,14 +23,18 @@ const globalErrorHandler: ErrorRequestHandler = (
             path: issue.path.join("."),
             message: issue.message,
         }));
-    }
+    } else if (err.code === "P2002") {
+        statusCode = 409;
+        message = "Data already exists";
 
-    if (err.code === "P2002") {
-        return res.status(409).json({
-            success: false,
-            message: "Data already exists",
-            errorDetails: err.meta,
-        });
+        errorDetails = {
+            statusCode,
+            meta: err.meta,
+        };
+    } else {
+        errorDetails = {
+            statusCode,
+        };
     }
 
     res.status(statusCode).json({
