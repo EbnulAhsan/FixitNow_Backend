@@ -123,6 +123,25 @@ const getSingleBooking = catchAsync(
 
 
 
+// Get all bookings for admin
+const getAllBookingsForAdmin = catchAsync(
+    async (req: Request, res: Response) => {
+        const result =
+            await BookingServices.getAllBookingsForAdminFromDB(
+                req.query
+            );
+
+        res.status(200).json({
+            success: true,
+            message: "All bookings retrieved successfully",
+            meta: result.meta,
+            data: result.data,
+        });
+    }
+);
+
+
+
 
 
 
@@ -139,5 +158,6 @@ export const BookingControllers = {
     getTechnicianBookings,
     updateBookingStatus,
     cancelBooking,
-    getSingleBooking
+    getSingleBooking,
+    getAllBookingsForAdmin
 };

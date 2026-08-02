@@ -3,6 +3,8 @@ import auth from "../../middlewares/auth";
 import validateRequest from "../../middlewares/validateRequest";
 import { AdminControllers } from "./admin.controller";
 import { AdminValidation } from "./admin.validation";
+import { BookingControllers } from "../booking/booking.controller";
+import { BookingValidation } from "../booking/booking.validation";
 
 const router = express.Router();
 
@@ -43,6 +45,15 @@ router.patch(
         AdminValidation.userIdParamsValidationSchema
     ),
     AdminControllers.softDeleteUser
+);
+
+router.get(
+    "/bookings",
+    auth("ADMIN"),
+    validateRequest(
+        BookingValidation.getAllBookingsForAdminValidationSchema
+    ),
+    BookingControllers.getAllBookingsForAdmin
 );
 
 
