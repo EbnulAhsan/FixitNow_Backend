@@ -1,3 +1,4 @@
+import { AppError } from "../../utils/appError";
 import prisma from "../../utils/prisma";
 import { TTechnicianProfile } from "./technician.interface";
 
@@ -9,25 +10,56 @@ const upsertTechnicianProfile = async (
         where: {
             id: userId,
         },
+        select: {
+            id: true,
+            role: true,
+            isBlocked: true,
+            isDeleted: true,
+        },
     });
 
     if (!user) {
-        throw new Error("User not found please create one ");
+        throw new AppError(
+            404,
+            "User not found"
+        );
+    }
+
+    if (user.isDeleted) {
+        throw new AppError(
+            403,
+            "Your account has been deleted"
+        );
+    }
+
+    if (user.isBlocked) {
+        throw new AppError(
+            403,
+            "Your account has been blocked"
+        );
     }
 
     if (user.role !== "TECHNICIAN") {
-        throw new Error(
-            "Only technicians can create or update a technician profile, others will not ."
+        throw new AppError(
+            403,
+            "Only technicians can create or update a technician profile"
         );
     }
+
+    const profileData = {
+        bio: payload.bio?.trim() ?? "",
+        skills: payload.skills,
+        experience: payload.experience,
+        hourlyRate: payload.hourlyRate,
+    };
 
     const result = await prisma.technicianProfile.upsert({
         where: {
             userId,
         },
-        update: payload,
+        update: profileData,
         create: {
-            ...payload,
+            ...profileData,
             userId,
         },
         include: {
