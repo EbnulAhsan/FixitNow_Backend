@@ -24,6 +24,18 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api", router);
 
+
+app.use((req: Request, res: Response) => {
+    res.status(404).json({
+        success: false,
+        message: "API endpoint not found",
+        errorDetails: {
+            statusCode: 404,
+        },
+    });
+});
+
+// Global error handler must remain last
 app.use(globalErrorHandler);
 
 export default app;
