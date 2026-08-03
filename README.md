@@ -61,7 +61,7 @@ The project ships with complete REST API documentation, server-side validation, 
 | **Backend Repository** | [github.com/EbnulAhsan/FixItNow_Backend](https://github.com/EbnulAhsan/FixItNow_Backend) |
 | **Live API** | [fixitnow-backend-rkod.onrender.com](https://fixitnow-backend-rkod.onrender.com) |
 | **Health Check** | [fixitnow-backend-rkod.onrender.com/](https://fixitnow-backend-rkod.onrender.com/) |
-| **Postman Collection** | [`postman/FixItNow.postman_collection.json`](./postman/FixItNow.postman_collection.json) |
+| **Postman Collection** | [https://github.com/EbnulAhsan/FixitNow_Backend/blob/main/postman/fixitNow.postman_collection.json |
 | **Demo Video** | `ADD_DEMO_VIDEO_LINK_HERE` |
 
 > ⚠️ The Render free instance may take a short time to wake up after inactivity.
