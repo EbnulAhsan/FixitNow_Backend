@@ -198,6 +198,340 @@
               "body": "{\n    \"success\": true,\n    \"message\": \"User registered successfully\",\n    \"data\": {\n        \"id\": \"682ab470-2ca8-474b-ac90-ec48caba8aa5\",\n        \"name\": \"Sakib Customer\",\n        \"email\": \"customer5@example.com\",\n        \"phone\": \"01612345678\",\n        \"address\": \"Sylhet, Bangladesh\",\n        \"profilePhoto\": null,\n        \"role\": \"CUSTOMER\",\n        \"isDeleted\": false,\n        \"isBlocked\": false,\n        \"createdAt\": \"2026-08-02T21:27:26.488Z\",\n        \"updatedAt\": \"2026-08-02T21:27:26.488Z\"\n    }\n}"
             }
           ]
+        },
+        {
+          "name": "Admin account register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"FixItNow Admin\",\r\n  \"email\": \"admin@fixitnow.com\",\r\n  \"password\": \"Admin1721\",\r\n  \"role\": \"CUSTOMER\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://fixitnow-backend-rkod.onrender.com/api/auth/register",
+              "protocol": "https",
+              "host": [
+                "fixitnow-backend-rkod",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Admin account register",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"FixItNow Admin\",\r\n  \"email\": \"admin@fixitnow.com\",\r\n  \"password\": \"Admin1721\",\r\n  \"role\": \"CUSTOMER\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://fixitnow-backend-rkod.onrender.com/api/auth/register",
+                  "protocol": "https",
+                  "host": [
+                    "fixitnow-backend-rkod",
+                    "onrender",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 03 Aug 2026 00:48:35 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "232"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"157-qFHHTpKVgWlEb5KjuaSxgO21NUw\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "9f5fb0da-7020-4a99"
+                },
+                {
+                  "key": "Server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "CF-RAY",
+                  "value": "a251514d68d05d31-CGP"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User registered successfully\",\n    \"data\": {\n        \"id\": \"cd8708db-ee74-43d3-9763-77183555276a\",\n        \"name\": \"FixItNow Admin\",\n        \"email\": \"admin@fixitnow.com\",\n        \"phone\": null,\n        \"address\": null,\n        \"profilePhoto\": null,\n        \"role\": \"CUSTOMER\",\n        \"isDeleted\": false,\n        \"isBlocked\": false,\n        \"createdAt\": \"2026-08-03T00:48:35.805Z\",\n        \"updatedAt\": \"2026-08-03T00:48:35.805Z\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Production Customer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Production Customer\",\r\n  \"email\": \"production.customer@example.com\",\r\n  \"password\": \"Customer1721\",\r\n  \"phone\": \"01612345678\",\r\n  \"address\": \"Dhaka, Bangladesh\",\r\n  \"role\": \"CUSTOMER\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Production Customer",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Production Customer\",\r\n  \"email\": \"production.customer@example.com\",\r\n  \"password\": \"Customer1721\",\r\n  \"phone\": \"01612345678\",\r\n  \"address\": \"Dhaka, Bangladesh\",\r\n  \"role\": \"CUSTOMER\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 03 Aug 2026 01:39:23 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "251"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"181-nz9c7KOg4WC4KHYQ+DWQ92ELPSw\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "32001f88-d06a-427d"
+                },
+                {
+                  "key": "Server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "CF-RAY",
+                  "value": "a2519bb34eea812c-CGP"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User registered successfully\",\n    \"data\": {\n        \"id\": \"b706740d-1089-4c41-a1b4-494985087c5c\",\n        \"name\": \"Production Customer\",\n        \"email\": \"production.customer@example.com\",\n        \"phone\": \"01612345678\",\n        \"address\": \"Dhaka, Bangladesh\",\n        \"profilePhoto\": null,\n        \"role\": \"CUSTOMER\",\n        \"isDeleted\": false,\n        \"isBlocked\": false,\n        \"createdAt\": \"2026-08-03T01:39:23.139Z\",\n        \"updatedAt\": \"2026-08-03T01:39:23.139Z\"\n    }\n}"
+            },
+            {
+              "name": "Production Customer",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Production Customer\",\r\n  \"email\": \"production.customer@example.com\",\r\n  \"password\": \"Customer1721\",\r\n  \"phone\": \"01612345678\",\r\n  \"address\": \"Dhaka, Bangladesh\",\r\n  \"role\": \"CUSTOMER\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 03 Aug 2026 01:39:23 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "251"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"181-nz9c7KOg4WC4KHYQ+DWQ92ELPSw\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "32001f88-d06a-427d"
+                },
+                {
+                  "key": "Server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "CF-RAY",
+                  "value": "a2519bb34eea812c-CGP"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User registered successfully\",\n    \"data\": {\n        \"id\": \"b706740d-1089-4c41-a1b4-494985087c5c\",\n        \"name\": \"Production Customer\",\n        \"email\": \"production.customer@example.com\",\n        \"phone\": \"01612345678\",\n        \"address\": \"Dhaka, Bangladesh\",\n        \"profilePhoto\": null,\n        \"role\": \"CUSTOMER\",\n        \"isDeleted\": false,\n        \"isBlocked\": false,\n        \"createdAt\": \"2026-08-03T01:39:23.139Z\",\n        \"updatedAt\": \"2026-08-03T01:39:23.139Z\"\n    }\n}"
+            }
+          ]
         }
       ]
     },
@@ -436,7 +770,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"admin@fixitnow.com\",\r\n    \"password\": \"admin1721\"\r\n}",
+              "raw": "{\r\n    \"email\": \"admin@fixitnow.com\",\r\n    \"password\": \"Admin1721\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -444,12 +778,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:5000/api/auth/login",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/api/auth/login",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "5000",
               "path": [
                 "api",
                 "auth",
@@ -521,6 +853,552 @@
               ],
               "cookie": [],
               "body": "{\n    \"success\": true,\n    \"message\": \"User logged in successfully\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNhYjJhZDY5LTkxY2EtNDBlNC04NTQ4LWVlZTcwMTdkMTRlNCIsImVtYWlsIjoiYWRtaW5AZml4aXRub3cuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg1NzA2NTE0LCJleHAiOjE3ODYzMTEzMTR9.cvoTl-DK8yhjMWRqfAYSSFq8kYELTUvtO9bRzI5V-LY\"\n    }\n}"
+            },
+            {
+              "name": "admin login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"admin@fixitnow.com\",\r\n    \"password\": \"Admin1721\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 03 Aug 2026 01:31:28 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "272"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"147-mx6fZlGFIUQffwXEaHchcOlmYjg\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "8f8ef425-fae5-44c1"
+                },
+                {
+                  "key": "Server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "CF-RAY",
+                  "value": "a251901ceac80cfa-CGP"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User logged in successfully\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNkODcwOGRiLWVlNzQtNDNkMy05NzYzLTc3MTgzNTU1Mjc2YSIsImVtYWlsIjoiYWRtaW5AZml4aXRub3cuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg1NzIwNjg4LCJleHAiOjE3ODYzMjU0ODh9.Hb2tyVKzH-9caBjhVswg4ca2LkL1P3HC5l1MZWmvL_Q\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MmFiNDcwLTJjYTgtNDc0Yi1hYzkwLWVjNDhjYWJhOGFhNSIsImVtYWlsIjoiY3VzdG9tZXI1QGV4YW1wbGUuY29tIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzg1NzA2NDU5LCJleHAiOjE3ODYzMTEyNTl9.uSfwZvL18abEcrpvb7YGYP0zTJHU6o9ahvKziRXS9Z0",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/auth/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get My Profile",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5000/api/auth/me",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5000",
+                  "path": [
+                    "api",
+                    "auth",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "370"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"172-1GAol0+NWnXa14AsXtl76gHFces\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 02 Aug 2026 23:45:55 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User retrieved successfully\",\n    \"data\": {\n        \"id\": \"682ab470-2ca8-474b-ac90-ec48caba8aa5\",\n        \"name\": \"Sakib Customer\",\n        \"email\": \"customer5@example.com\",\n        \"phone\": \"01612345678\",\n        \"address\": \"Sylhet, Bangladesh\",\n        \"profilePhoto\": null,\n        \"role\": \"CUSTOMER\",\n        \"isDeleted\": false,\n        \"isBlocked\": false,\n        \"createdAt\": \"2026-08-02T21:27:26.488Z\",\n        \"updatedAt\": \"2026-08-02T21:27:26.488Z\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Production Admin Login Test",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"admin@fixitnow.com\",\r\n    \"password\": \"Admin1721\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://fixitnow-backend-rkod.onrender.com/api/auth/login",
+              "protocol": "https",
+              "host": [
+                "fixitnow-backend-rkod",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Production Admin Login Test",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"admin@fixitnow.com\",\r\n    \"password\": \"Admin1721\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://fixitnow-backend-rkod.onrender.com/api/auth/login",
+                  "protocol": "https",
+                  "host": [
+                    "fixitnow-backend-rkod",
+                    "onrender",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 03 Aug 2026 00:54:46 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "270"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"147-zTeoH8VOQ8oZbHEbSkNQoBlrglU\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "ad9471e6-33c8-4e58"
+                },
+                {
+                  "key": "Server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "CF-RAY",
+                  "value": "a2515a572f643e7d-CGP"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User logged in successfully\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNkODcwOGRiLWVlNzQtNDNkMy05NzYzLTc3MTgzNTU1Mjc2YSIsImVtYWlsIjoiYWRtaW5AZml4aXRub3cuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg1NzE4NDg2LCJleHAiOjE3ODYzMjMyODZ9.G2rYfshmPJEzE88CKZ9FmDXIzeBVghry_IgT9OUYXM8\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Live Admin Endpoint Test",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNkODcwOGRiLWVlNzQtNDNkMy05NzYzLTc3MTgzNTU1Mjc2YSIsImVtYWlsIjoiYWRtaW5AZml4aXRub3cuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg1NzE4NDg2LCJleHAiOjE3ODYzMjMyODZ9.G2rYfshmPJEzE88CKZ9FmDXIzeBVghry_IgT9OUYXM8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://fixitnow-backend-rkod.onrender.com/api/admin/users",
+              "protocol": "https",
+              "host": [
+                "fixitnow-backend-rkod",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Live Admin Endpoint Test",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://fixitnow-backend-rkod.onrender.com/api/admin/users",
+                  "protocol": "https",
+                  "host": [
+                    "fixitnow-backend-rkod",
+                    "onrender",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 03 Aug 2026 00:57:43 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "283"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"193-DzMeU2MOJcuiFpdtZlQgfWPo7a8\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "c50a4509-608c-4889"
+                },
+                {
+                  "key": "Server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "CF-RAY",
+                  "value": "a2515eadddfa3d91-DAC"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Users retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": \"cd8708db-ee74-43d3-9763-77183555276a\",\n            \"name\": \"FixItNow Admin\",\n            \"email\": \"admin@fixitnow.com\",\n            \"phone\": null,\n            \"address\": null,\n            \"profilePhoto\": null,\n            \"role\": \"ADMIN\",\n            \"isBlocked\": false,\n            \"isDeleted\": false,\n            \"createdAt\": \"2026-08-03T00:48:35.805Z\",\n            \"updatedAt\": \"2026-08-03T00:53:43.423Z\",\n            \"technicianProfile\": null,\n            \"_count\": {\n                \"bookings\": 0,\n                \"reviews\": 0\n            }\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Production Customer Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"production.customer@example.com\",\r\n  \"password\": \"Customer1721\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Production Customer Login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"production.customer@example.com\",\r\n  \"password\": \"Customer1721\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 03 Aug 2026 01:41:53 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "284"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"15d-wnoKMVzuoEkCqtaL5DONoq8W71U\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "ec17686b-925e-46ed"
+                },
+                {
+                  "key": "Server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "CF-RAY",
+                  "value": "a2519f5da8050eed-DAC"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User logged in successfully\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI3MDY3NDBkLTEwODktNGM0MS1hMWI0LTQ5NDk4NTA4N2M1YyIsImVtYWlsIjoicHJvZHVjdGlvbi5jdXN0b21lckBleGFtcGxlLmNvbSIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc4NTcyMTMxMywiZXhwIjoxNzg2MzI2MTEzfQ.JNFBBDlMSEs1-c7J-AClj2XiYOMKmjprlf3GBaqSpgo\"\n    }\n}"
             }
           ]
         }
@@ -828,7 +1706,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:5000/api/categories/1aeaa1e1-a17d-4eae-9f21-6094235952ed",
+              "raw": "http://localhost:5000/api/categories/748b963c-ebc2-4730-90ef-20f0ca7d4900",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -837,7 +1715,7 @@
               "path": [
                 "api",
                 "categories",
-                "1aeaa1e1-a17d-4eae-9f21-6094235952ed"
+                "748b963c-ebc2-4730-90ef-20f0ca7d4900"
               ]
             }
           },
@@ -896,6 +1774,61 @@
               ],
               "cookie": [],
               "body": "{\n    \"success\": true,\n    \"message\": \"Category deleted successfully\",\n    \"data\": {\n        \"id\": \"1aeaa1e1-a17d-4eae-9f21-6094235952ed\",\n        \"name\": \"Home Appliance Services\",\n        \"description\": \"Home appliance installation and repair services\",\n        \"createdAt\": \"2026-08-02T21:43:00.655Z\",\n        \"updatedAt\": \"2026-08-02T21:47:28.089Z\"\n    }\n}"
+            },
+            {
+              "name": "Delete Category",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5000/api/categories/748b963c-ebc2-4730-90ef-20f0ca7d4900",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5000",
+                  "path": [
+                    "api",
+                    "categories",
+                    "748b963c-ebc2-4730-90ef-20f0ca7d4900"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "125"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"7d-9xbG/69DPDz4HwSrsK4XXY0F5tM\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 02 Aug 2026 23:38:10 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Category cannot be deleted because it has associated services\",\n    \"errorDetails\": {\n        \"statusCode\": 409\n    }\n}"
             }
           ]
         }
@@ -1773,6 +2706,96 @@
                 {
                   "key": "Keep-Alive",
                   "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Bookings retrieved successfully\",\n    \"data\": []\n}"
+            },
+            {
+              "name": "Get My Bookings",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings/my-bookings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bookings",
+                    "my-bookings"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 03 Aug 2026 01:43:10 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "66"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"46-DKGQHXBsOhkwl93kHOQjhXTrAr8\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "829adbba-c94c-4c9b"
+                },
+                {
+                  "key": "Server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "CF-RAY",
+                  "value": "a251a141dd25b5cb-CGP"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
                 }
               ],
               "cookie": [],
@@ -2664,6 +3687,61 @@
               ],
               "cookie": [],
               "body": "{\n    \"success\": true,\n    \"message\": \"Payment history retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": \"ef2d3248-44d9-4c6a-8202-21256351ddda\",\n            \"transactionId\": \"pi_3U083JFhadYR9ZUf1re2pYJE\",\n            \"bookingId\": \"71668721-9485-45e1-a526-163bb88a1508\",\n            \"amount\": 1800,\n            \"provider\": \"STRIPE\",\n            \"status\": \"PENDING\",\n            \"paidAt\": null,\n            \"createdAt\": \"2026-08-02T22:40:16.619Z\",\n            \"updatedAt\": \"2026-08-02T22:40:16.619Z\",\n            \"booking\": {\n                \"id\": \"71668721-9485-45e1-a526-163bb88a1508\",\n                \"customerId\": \"682ab470-2ca8-474b-ac90-ec48caba8aa5\",\n                \"serviceId\": \"bdc01934-3f9d-407f-8dea-b6725ec6b616\",\n                \"bookingDate\": \"2026-08-20T10:00:00.000Z\",\n                \"status\": \"ACCEPTED\",\n                \"createdAt\": \"2026-08-02T22:37:37.925Z\",\n                \"updatedAt\": \"2026-08-02T22:39:09.956Z\",\n                \"service\": {\n                    \"id\": \"bdc01934-3f9d-407f-8dea-b6725ec6b616\",\n                    \"title\": \"Emergency Plumbing Repair Service\",\n                    \"description\": \"Professional emergency repair service for leaks, blocked pipes, and urgent plumbing problems.\",\n                    \"price\": 1800,\n                    \"technicianId\": \"027a95d5-2eb0-4547-a642-0531ab6080d8\",\n                    \"categoryId\": \"748b963c-ebc2-4730-90ef-20f0ca7d4900\",\n                    \"createdAt\": \"2026-07-31T19:01:37.165Z\",\n                    \"updatedAt\": \"2026-08-01T09:23:20.679Z\",\n                    \"category\": {\n                        \"id\": \"748b963c-ebc2-4730-90ef-20f0ca7d4900\",\n                        \"name\": \"Plumbing\",\n                        \"description\": \"Plumbing services\",\n                        \"createdAt\": \"2026-07-31T14:42:37.958Z\",\n                        \"updatedAt\": \"2026-07-31T14:42:37.958Z\"\n                    },\n                    \"technician\": {\n                        \"id\": \"027a95d5-2eb0-4547-a642-0531ab6080d8\",\n                        \"userId\": \"011b1afd-69b8-467a-ba50-b88c16c43739\",\n                        \"bio\": \"Experienced home service technician specializing in plumbing and electrical work.\",\n                        \"skills\": [\n                            \"Plumbing\",\n                            \"Electrical Repair\"\n                        ],\n                        \"experience\": 5,\n                        \"hourlyRate\": 800,\n                        \"createdAt\": \"2026-07-31T18:56:05.022Z\",\n                        \"updatedAt\": \"2026-08-02T12:11:55.140Z\",\n                        \"user\": {\n                            \"id\": \"011b1afd-69b8-467a-ba50-b88c16c43739\",\n                            \"name\": \"Rahim Technician\",\n                            \"email\": \"technician@example.com\",\n                            \"phone\": \"01712345678\",\n                            \"profilePhoto\": \"https://example.com/technician.jpg\"\n                        }\n                    }\n                }\n            }\n        }\n    ]\n}"
+            },
+            {
+              "name": "my-payments",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5000/api/payments/my-payments",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5000",
+                  "path": [
+                    "api",
+                    "payments",
+                    "my-payments"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1811"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"713-CgEgf7ht5qGU6xd+Y8GqO3bGxHs\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 02 Aug 2026 23:32:38 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Payment history retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": \"ef2d3248-44d9-4c6a-8202-21256351ddda\",\n            \"transactionId\": \"pi_3U083JFhadYR9ZUf1re2pYJE\",\n            \"bookingId\": \"71668721-9485-45e1-a526-163bb88a1508\",\n            \"amount\": 1800,\n            \"provider\": \"STRIPE\",\n            \"status\": \"COMPLETED\",\n            \"paidAt\": \"2026-08-02T23:31:01.350Z\",\n            \"createdAt\": \"2026-08-02T22:40:16.619Z\",\n            \"updatedAt\": \"2026-08-02T23:31:01.355Z\",\n            \"booking\": {\n                \"id\": \"71668721-9485-45e1-a526-163bb88a1508\",\n                \"customerId\": \"682ab470-2ca8-474b-ac90-ec48caba8aa5\",\n                \"serviceId\": \"bdc01934-3f9d-407f-8dea-b6725ec6b616\",\n                \"bookingDate\": \"2026-08-20T10:00:00.000Z\",\n                \"status\": \"PAID\",\n                \"createdAt\": \"2026-08-02T22:37:37.925Z\",\n                \"updatedAt\": \"2026-08-02T23:31:01.364Z\",\n                \"service\": {\n                    \"id\": \"bdc01934-3f9d-407f-8dea-b6725ec6b616\",\n                    \"title\": \"Emergency Plumbing Repair Service\",\n                    \"description\": \"Professional emergency repair service for leaks, blocked pipes, and urgent plumbing problems.\",\n                    \"price\": 1800,\n                    \"technicianId\": \"027a95d5-2eb0-4547-a642-0531ab6080d8\",\n                    \"categoryId\": \"748b963c-ebc2-4730-90ef-20f0ca7d4900\",\n                    \"createdAt\": \"2026-07-31T19:01:37.165Z\",\n                    \"updatedAt\": \"2026-08-01T09:23:20.679Z\",\n                    \"category\": {\n                        \"id\": \"748b963c-ebc2-4730-90ef-20f0ca7d4900\",\n                        \"name\": \"Plumbing\",\n                        \"description\": \"Plumbing services\",\n                        \"createdAt\": \"2026-07-31T14:42:37.958Z\",\n                        \"updatedAt\": \"2026-07-31T14:42:37.958Z\"\n                    },\n                    \"technician\": {\n                        \"id\": \"027a95d5-2eb0-4547-a642-0531ab6080d8\",\n                        \"userId\": \"011b1afd-69b8-467a-ba50-b88c16c43739\",\n                        \"bio\": \"Experienced home service technician specializing in plumbing and electrical work.\",\n                        \"skills\": [\n                            \"Plumbing\",\n                            \"Electrical Repair\"\n                        ],\n                        \"experience\": 5,\n                        \"hourlyRate\": 800,\n                        \"createdAt\": \"2026-07-31T18:56:05.022Z\",\n                        \"updatedAt\": \"2026-08-02T12:11:55.140Z\",\n                        \"user\": {\n                            \"id\": \"011b1afd-69b8-467a-ba50-b88c16c43739\",\n                            \"name\": \"Rahim Technician\",\n                            \"email\": \"technician@example.com\",\n                            \"phone\": \"01712345678\",\n                            \"profilePhoto\": \"https://example.com/technician.jpg\"\n                        }\n                    }\n                }\n            }\n        }\n    ]\n}"
             }
           ]
         }
@@ -3636,6 +4714,132 @@
           ]
         }
       ]
+    },
+    {
+      "name": "sof delete ADMIN",
+      "item": [
+        {
+          "name": "Soft Delete User Setup",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNhYjJhZDY5LTkxY2EtNDBlNC04NTQ4LWVlZTcwMTdkMTRlNCIsImVtYWlsIjoiYWRtaW5AZml4aXRub3cuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg1NzA2NTE0LCJleHAiOjE3ODYzMTEzMTR9.cvoTl-DK8yhjMWRqfAYSSFq8kYELTUvtO9bRzI5V-LY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/admin/users/06a6567e-6c9b-4b53-9635-d912ea10c00a/soft-delete",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "06a6567e-6c9b-4b53-9635-d912ea10c00a",
+                "soft-delete"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Soft Delete User Setup",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5000/api/admin/users/06a6567e-6c9b-4b53-9635-d912ea10c00a/soft-delete",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "users",
+                    "06a6567e-6c9b-4b53-9635-d912ea10c00a",
+                    "soft-delete"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "293"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"125-nAJBfkKs5J0w8hHUQujdm1KjCO4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 02 Aug 2026 23:49:35 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User deleted successfully\",\n    \"data\": {\n        \"id\": \"06a6567e-6c9b-4b53-9635-d912ea10c00a\",\n        \"name\": \"Sakib Customer\",\n        \"email\": \"customer3@example.com\",\n        \"role\": \"CUSTOMER\",\n        \"isDeleted\": true,\n        \"isBlocked\": true,\n        \"createdAt\": \"2026-08-02T12:43:40.376Z\",\n        \"updatedAt\": \"2026-08-02T23:49:35.536Z\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
     }
   ]
 }
