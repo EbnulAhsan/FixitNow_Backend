@@ -1,70 +1,20 @@
-<div align="center">
+# FixItNow Backend API
 
-# 🔧 FixItNow — Backend API
+FixItNow is a production-ready, role-based home service marketplace backend built with Node.js, Express, TypeScript, PostgreSQL, Prisma, JWT, Zod, and Stripe. The platform connects Customers with Technicians while providing Administrators with secure tools for managing users, categories, bookings, and payments.
 
-**A production-ready, role-based home service marketplace backend**
-
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-5-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat&logo=prisma&logoColor=white)](https://www.prisma.io/)
-[![Stripe](https://img.shields.io/badge/Stripe-Payments-635BFF?style=flat&logo=stripe&logoColor=white)](https://stripe.com/)
-[![Deployed on Render](https://img.shields.io/badge/Deployed-Render-46E3B7?style=flat&logo=render&logoColor=white)](https://render.com/)
-[![License](https://img.shields.io/badge/License-Educational-lightgrey?style=flat)](#license)
-
-[Live API](#live-api-base-url) · [Postman Collection](#api-documentation) · [Endpoints](#api-endpoints) · [Local Setup](#local-installation)
-
-</div>
-
-
----
-
-FixItNow is a production-ready, role-based home service marketplace backend built with **Node.js, Express, TypeScript, PostgreSQL, Prisma, JWT, Zod, and Stripe**. The platform connects **Customers** with **Technicians**, while giving **Administrators** secure tools for managing users, categories, bookings, and payments.
-
-The project ships with complete REST API documentation, server-side validation, structured JSON error handling, role-based authorization, real Stripe Payment Intent processing, signed Stripe webhook verification, deployment on Render, and a production PostgreSQL database.
-
-## Table of Contents
-
-- [Live Links and Submission Information](#live-links-and-submission-information)
-- [Admin Credentials](#admin-credentials)
-- [Project Overview](#project-overview)
-- [System Architecture](#system-architecture)
-- [Mandatory Assignment Requirements](#mandatory-assignment-requirements)
-- [Core Features](#core-features)
-- [Technology Stack](#technology-stack)
-- [Live API Base URL](#live-api-base-url)
-- [API Documentation](#api-documentation)
-- [API Endpoints](#api-endpoints)
-- [API Response Format](#api-response-format)
-- [HTTP Status Codes](#http-status-codes)
-- [Local Installation](#local-installation)
-- [Database Setup](#database-setup)
-- [Run the Project](#run-the-project)
-- [Stripe Webhook Testing](#stripe-webhook-testing)
-- [Render Deployment Configuration](#render-deployment-configuration)
-- [Role Permissions](#role-permissions)
-- [Security Measures](#security-measures)
-- [Validation Coverage](#validation-coverage)
-- [Commit History](#commit-history)
-- [Demo Video](#demo-video)
-- [Final Submission Summary](#final-submission-summary)
-- [Author](#author)
-- [License](#license)
+The project includes complete REST API documentation, server-side validation, structured JSON error handling, role-based authorization, real Stripe Payment Intent processing, signed Stripe webhook verification, deployment on Render, and a PostgreSQL production database.
 
 ---
 
 ## Live Links and Submission Information
 
-| Resource | Link |
-|---|---|
-| **Backend Repository** | [github.com/EbnulAhsan/FixItNow_Backend](https://github.com/EbnulAhsan/FixItNow_Backend) |
-| **Live API** | [fixitnow-backend-rkod.onrender.com](https://fixitnow-backend-rkod.onrender.com) |
-| **Health Check** | [fixitnow-backend-rkod.onrender.com/](https://fixitnow-backend-rkod.onrender.com/) |
-| **Postman Collection** | [`postman/FixItNow.postman_collection.json`](./postman/FixItNow.postman_collection.json) |
-| **Demo Video** | `ADD_DEMO_VIDEO_LINK_HERE` |
+- **Backend Repository:** https://github.com/EbnulAhsan/FixItNow_Backend
+- **Live API:** https://fixitnow-backend-rkod.onrender.com
+- **Health Check:** https://fixitnow-backend-rkod.onrender.com/
+- **Postman Collection:** [`postman/FixItNow.postman_collection.json`](./postman/FixItNow.postman_collection.json)
+- **Demo Video:** `ADD_DEMO_VIDEO_LINK_HERE`
 
-> ⚠️ The Render free instance may take a short time to wake up after inactivity.
+> The Render free instance may take a short time to wake up after inactivity.
 
 ---
 
@@ -83,75 +33,38 @@ Password: Admin1721
 
 ## Project Overview
 
-FixItNow provides a complete backend workflow for a home service marketplace:
-
-- **Customers** discover services, create bookings, pay through Stripe, track payments, and submit reviews.
-- **Technicians** maintain professional profiles, publish services, manage assigned bookings, and update booking statuses.
-- **Administrators** manage users, categories, bookings, and payments through protected endpoints.
+FixItNow provides a complete backend workflow for a home service marketplace. Customers can discover services, create bookings, pay through Stripe, track payments, and submit reviews. Technicians can maintain professional profiles, publish services, manage their assigned bookings, and update booking statuses. Administrators can manage users, categories, bookings, and payments through protected endpoints.
 
 ### Supported Roles
 
-| Role | Description |
-|---|---|
-| `CUSTOMER` | Browses services, books, pays, and reviews |
-| `TECHNICIAN` | Publishes services and fulfills bookings |
-| `ADMIN` | Manages platform users, categories, bookings, and payments |
-
----
-
-## System Architecture
-
-```mermaid
-flowchart LR
-    subgraph Client
-        A[Postman / Frontend Client]
-    end
-
-    subgraph API["FixItNow API — Node.js / Express / TypeScript"]
-        B[Auth Middleware<br/>JWT + Role Guard]
-        C[Zod Validation Layer]
-        D[Route Controllers]
-        E[Service Layer]
-    end
-
-    subgraph Data["Data & Integrations"]
-        F[(PostgreSQL<br/>via Prisma ORM)]
-        G[Stripe Payment Intents]
-        H[Stripe Signed Webhooks]
-    end
-
-    A -->|HTTPS Request| B --> C --> D --> E
-    E --> F
-    E -->|Create Intent| G
-    G -->|Signed Event| H --> E
-```
+- `CUSTOMER`
+- `TECHNICIAN`
+- `ADMIN`
 
 ---
 
 ## Mandatory Assignment Requirements
 
-| Requirement | Status |
-|---|:---:|
-| Postman collection covering all API endpoints | ✅ |
-| Consistent structured JSON error responses | ✅ |
-| At least 20 meaningful backend commits | ✅ |
-| Server-side validation on protected and public endpoints | ✅ |
-| Working Admin email and password | ✅ |
-| Real Stripe payment integration | ✅ |
-| Signed Stripe webhook verification | ✅ |
-| Payment status tracking | ✅ |
-| Customer, Technician, and Admin roles | ✅ |
-| Role-based authorization | ✅ |
-| Live API deployment on Render | ✅ |
-| Production PostgreSQL database | ✅ |
-| Production Stripe webhook endpoint | ✅ |
-| Demo video link | ⬜ |
+- [x] Postman collection covering all API endpoints
+- [x] Consistent structured JSON error responses
+- [x] At least 20 meaningful backend commits
+- [x] Server-side validation on protected and public endpoints
+- [x] Working Admin email and password
+- [x] Real Stripe payment integration
+- [x] Signed Stripe webhook verification
+- [x] Payment status tracking
+- [x] Customer, Technician, and Admin roles
+- [x] Role-based authorization
+- [x] Live API deployment on Render
+- [x] Production PostgreSQL database
+- [x] Production Stripe webhook endpoint
+- [ ] Demo video link
 
 ---
 
 ## Core Features
 
-### 🔐 Authentication and Authorization
+### Authentication and Authorization
 
 - Customer and Technician registration
 - Customer, Technician, and Admin login
@@ -164,7 +77,7 @@ flowchart LR
 - Generic invalid-credential responses
 - Password hashing with bcrypt
 
-### 👷 Technician Profile
+### Technician Profile
 
 - Create or update a Technician profile using a single upsert endpoint
 - Add a professional biography
@@ -173,42 +86,57 @@ flowchart LR
 - Configure an hourly service rate
 - Technician-only authorization
 
-### 🗂️ Category Management
+### Category Management
 
-- Admin-only category creation, update, and deletion
+- Admin-only category creation
 - Retrieve all categories publicly
+- Admin-only category update
+- Admin-only category deletion
 - Duplicate category prevention
 - Safe deletion protection when services are associated with a category
 - UUID and request-body validation
 
-### 🧰 Service Management
+### Service Management
 
-- Technician-only service creation, update, and deletion
-- Retrieve all services or a single service
+- Technician-only service creation
+- Retrieve all services
+- Retrieve a single service
 - Search services by keyword
-- Filter services by category, minimum price, and maximum price
+- Filter services by category
+- Filter services by minimum and maximum price
+- Technician-only service update and deletion
 - Service ownership verification
-- Customer role restriction and non-owner Technician restriction
+- Customer role restriction
+- Non-owner Technician restriction
 
-### 📅 Booking Management
+### Booking Management
 
-- Customer booking creation and booking history
+- Customer booking creation
+- Customer booking history
 - Technician booking history
 - Retrieve a single booking
 - Technician-controlled booking status updates
 - Customer-controlled booking cancellation
-- Booking ownership and role validation with controlled status transitions
+- Booking ownership and role validation
+- Controlled booking status transitions
 
-**Supported booking statuses:**
+Supported booking statuses:
 
-`REQUESTED` → `ACCEPTED` → `PAID` → `IN_PROGRESS` → `COMPLETED`
-(with `DECLINED` and `CANCELLED` as terminal branches)
+```text
+REQUESTED
+ACCEPTED
+DECLINED
+PAID
+IN_PROGRESS
+COMPLETED
+CANCELLED
+```
 
-### 💳 Stripe Payment Integration
+### Stripe Payment Integration
 
-FixItNow uses **Stripe Test Mode** for real payment processing — no Cash on Delivery, Pay Later, or simulated payment workflow is used.
+FixItNow uses Stripe Test Mode for real payment processing. No Cash on Delivery, Pay Later, or simulated payment workflow is used.
 
-**Payment workflow:**
+The payment workflow is:
 
 1. A Customer creates a booking.
 2. The assigned Technician accepts the booking.
@@ -221,44 +149,89 @@ FixItNow uses **Stripe Test Mode** for real payment processing — no Cash on De
 9. The Customer can view the completed payment in payment history.
 10. The Admin can view and filter all payment records.
 
-**Implemented payment features:**
+Implemented payment features:
 
-- Stripe Payment Intent creation and transaction ID tracking
+- Stripe Payment Intent creation
+- Stripe transaction ID tracking
 - Payment status tracking
-- Signed webhook verification with idempotent handling
-- Successful and failed payment processing
+- Signed webhook verification
+- Successful payment processing
+- Failed payment processing
+- Idempotent webhook handling
 - Safe acknowledgement of unknown Stripe test events
-- Customer payment history and Admin payment listing
-- Payment filtering by status and provider, with pagination
+- Customer payment history
+- Admin payment listing
+- Payment filtering by status and provider
+- Pagination for Admin payment results
 
-### ⭐ Review Management
+### Review Management
 
-- Customer review submission, allowed only for completed bookings
+- Customer review submission
+- Reviews allowed only for completed bookings
 - One review per eligible booking
 - Retrieve Technician reviews publicly
-- Average Technician rating and total review count
-- Customer-owned review update and deletion
+- Average Technician rating
+- Total Technician review count
+- Customer-owned review update
+- Customer-owned review deletion
 - Rating validation from 1 to 5
 
-### 🛠️ Admin Management
+### Admin Management
 
-- Retrieve, search, and filter all users (by role, blocked status, deleted status)
-- Block, unblock, and soft-delete users
-- Retrieve, search, and filter all bookings
-- Retrieve and filter all payments by status and provider
+- Retrieve all users
+- Search users
+- Filter users by role
+- Filter users by blocked status
+- Filter users by deleted status
+- Block active users
+- Unblock blocked users
+- Soft delete users
+- Retrieve all bookings
+- Search and filter bookings
+- Retrieve all payments
+- Filter payments by status and provider
 - Paginated Admin responses
 
 ---
 
 ## Technology Stack
 
-| Category | Technologies |
-|---|---|
-| **Backend** | Node.js, Express.js 5, TypeScript |
-| **Database** | PostgreSQL, Prisma ORM, Render PostgreSQL |
-| **Auth & Security** | JSON Web Token, bcrypt, role-based authorization middleware, database-level account status checks |
-| **Validation & Errors** | Zod, body/param/query validation, structured JSON errors, JSON `404` handler |
-| **Payments & Deployment** | Stripe Payment Intents, Stripe signed webhooks, Stripe CLI, Render Web Service, Postman |
+### Backend
+
+- Node.js
+- Express.js 5
+- TypeScript
+
+### Database
+
+- PostgreSQL
+- Prisma ORM
+- Render PostgreSQL
+
+### Authentication and Security
+
+- JSON Web Token
+- bcrypt password hashing
+- Role-based authorization middleware
+- Database-level account status checks
+
+### Validation and Error Handling
+
+- Zod
+- Request body validation
+- Route parameter validation
+- Query parameter validation
+- Structured JSON errors
+- JSON `404 Not Found` handler
+
+### Payment and Deployment
+
+- Stripe Payment Intents
+- Stripe signed webhooks
+- Stripe CLI for local testing
+- Render Web Service
+- Render PostgreSQL
+- Postman
 
 ---
 
@@ -268,7 +241,9 @@ FixItNow uses **Stripe Test Mode** for real payment processing — no Cash on De
 https://fixitnow-backend-rkod.onrender.com
 ```
 
-All API endpoints use the `/api` prefix, for example:
+All API endpoints use the `/api` prefix.
+
+Example:
 
 ```text
 https://fixitnow-backend-rkod.onrender.com/api/services
@@ -299,14 +274,33 @@ postman/FixItNow.postman_collection.json
 ### Import the Postman Collection
 
 1. Clone or download this repository.
-2. Open Postman and click **Import**.
-3. Select `postman/FixItNow.postman_collection.json`.
-4. Open the imported `fixitNow` collection.
-5. Set the collection variable `baseUrl` to `https://fixitnow-backend-rkod.onrender.com`.
-6. Register or log in with the appropriate role.
-7. Copy the returned access token and use it as a Bearer Token for protected requests.
+2. Open Postman.
+3. Click **Import**.
+4. Select `postman/FixItNow.postman_collection.json`.
+5. Open the imported `fixitNow` collection.
+6. Set the collection variable `baseUrl` to:
 
-The collection contains requests for Authentication, Technician Profile, Categories, Services, Bookings, Payments, Reviews, Admin operations, successful response examples, validation errors, and authorization/ownership restrictions.
+```text
+https://fixitnow-backend-rkod.onrender.com
+```
+
+7. Register or log in with the appropriate role.
+8. Copy the returned access token.
+9. Use the token as a Bearer Token for protected requests.
+
+The collection contains requests for:
+
+- Authentication
+- Technician Profile
+- Categories
+- Services
+- Bookings
+- Payments
+- Reviews
+- Admin operations
+- Successful response examples
+- Validation errors
+- Authorization and ownership restrictions
 
 ---
 
@@ -314,38 +308,38 @@ The collection contains requests for Authentication, Technician Profile, Categor
 
 ### Authentication
 
-| Method | Endpoint |
-|---|---|
-| `POST` | `/api/auth/register` |
-| `POST` | `/api/auth/login` |
-| `GET` | `/api/auth/me` |
+```http
+POST /api/auth/register
+POST /api/auth/login
+GET  /api/auth/me
+```
 
 ### Technician Profile
 
-| Method | Endpoint |
-|---|---|
-| `PUT` | `/api/technician/profile` |
+```http
+PUT /api/technician/profile
+```
 
 ### Categories
 
-| Method | Endpoint |
-|---|---|
-| `POST` | `/api/categories` |
-| `GET` | `/api/categories` |
-| `PATCH` | `/api/categories/:id` |
-| `DELETE` | `/api/categories/:id` |
+```http
+POST   /api/categories
+GET    /api/categories
+PATCH  /api/categories/:id
+DELETE /api/categories/:id
+```
 
 ### Services
 
-| Method | Endpoint |
-|---|---|
-| `GET` | `/api/services` |
-| `POST` | `/api/services` |
-| `GET` | `/api/services/:id` |
-| `PATCH` | `/api/services/:id` |
-| `DELETE` | `/api/services/:id` |
+```http
+GET    /api/services
+POST   /api/services
+GET    /api/services/:id
+PATCH  /api/services/:id
+DELETE /api/services/:id
+```
 
-**Example filters:**
+Example filters:
 
 ```text
 GET /api/services?searchTerm=plumbing
@@ -355,44 +349,44 @@ GET /api/services?minPrice=500&maxPrice=2000
 
 ### Bookings
 
-| Method | Endpoint |
-|---|---|
-| `POST` | `/api/bookings` |
-| `GET` | `/api/bookings/my-bookings` |
-| `GET` | `/api/bookings/technician-bookings` |
-| `PATCH` | `/api/bookings/:id/status` |
-| `PATCH` | `/api/bookings/:id/cancel` |
-| `GET` | `/api/bookings/:id` |
+```http
+POST  /api/bookings
+GET   /api/bookings/my-bookings
+GET   /api/bookings/technician-bookings
+PATCH /api/bookings/:id/status
+PATCH /api/bookings/:id/cancel
+GET   /api/bookings/:id
+```
 
 ### Payments
 
-| Method | Endpoint |
-|---|---|
-| `POST` | `/api/payments/create-payment-intent` |
-| `GET` | `/api/payments/my-payments` |
-| `POST` | `/api/payments/webhook` |
+```http
+POST /api/payments/create-payment-intent
+GET  /api/payments/my-payments
+POST /api/payments/webhook
+```
 
 ### Reviews
 
-| Method | Endpoint |
-|---|---|
-| `POST` | `/api/reviews` |
-| `GET` | `/api/reviews/technician/:technicianId` |
-| `PATCH` | `/api/reviews/:id` |
-| `DELETE` | `/api/reviews/:id` |
+```http
+POST   /api/reviews
+GET    /api/reviews/technician/:technicianId
+PATCH  /api/reviews/:id
+DELETE /api/reviews/:id
+```
 
 ### Admin
 
-| Method | Endpoint |
-|---|---|
-| `GET` | `/api/admin/users` |
-| `PATCH` | `/api/admin/users/:id/block` |
-| `PATCH` | `/api/admin/users/:id/unblock` |
-| `PATCH` | `/api/admin/users/:id/soft-delete` |
-| `GET` | `/api/admin/bookings` |
-| `GET` | `/api/admin/payments` |
+```http
+GET   /api/admin/users
+PATCH /api/admin/users/:id/block
+PATCH /api/admin/users/:id/unblock
+PATCH /api/admin/users/:id/soft-delete
+GET   /api/admin/bookings
+GET   /api/admin/payments
+```
 
-**Example Admin queries:**
+Example Admin queries:
 
 ```text
 GET /api/admin/users?role=CUSTOMER
@@ -407,8 +401,7 @@ GET /api/admin/payments?status=COMPLETED&provider=STRIPE&page=1&limit=10
 
 ## API Response Format
 
-<details>
-<summary><strong>Successful Response</strong></summary>
+### Successful Response
 
 ```json
 {
@@ -418,10 +411,7 @@ GET /api/admin/payments?status=COMPLETED&provider=STRIPE&page=1&limit=10
 }
 ```
 
-</details>
-
-<details>
-<summary><strong>Paginated Response</strong></summary>
+### Paginated Response
 
 ```json
 {
@@ -437,10 +427,7 @@ GET /api/admin/payments?status=COMPLETED&provider=STRIPE&page=1&limit=10
 }
 ```
 
-</details>
-
-<details>
-<summary><strong>Application Error</strong></summary>
+### Application Error
 
 ```json
 {
@@ -452,10 +439,7 @@ GET /api/admin/payments?status=COMPLETED&provider=STRIPE&page=1&limit=10
 }
 ```
 
-</details>
-
-<details>
-<summary><strong>Validation Error</strong></summary>
+### Validation Error
 
 ```json
 {
@@ -470,10 +454,7 @@ GET /api/admin/payments?status=COMPLETED&provider=STRIPE&page=1&limit=10
 }
 ```
 
-</details>
-
-<details>
-<summary><strong>Unknown Route</strong></summary>
+### Unknown Route
 
 ```json
 {
@@ -485,22 +466,20 @@ GET /api/admin/payments?status=COMPLETED&provider=STRIPE&page=1&limit=10
 }
 ```
 
-</details>
-
 ---
 
 ## HTTP Status Codes
 
-| Code | Meaning |
-|---|---|
-| `200` | OK |
-| `201` | Created |
-| `400` | Bad Request |
-| `401` | Unauthorized |
-| `403` | Forbidden |
-| `404` | Not Found |
-| `409` | Conflict |
-| `500` | Internal Server Error |
+```text
+200 OK
+201 Created
+400 Bad Request
+401 Unauthorized
+403 Forbidden
+404 Not Found
+409 Conflict
+500 Internal Server Error
+```
 
 ---
 
@@ -508,12 +487,14 @@ GET /api/admin/payments?status=COMPLETED&provider=STRIPE&page=1&limit=10
 
 ### Prerequisites
 
+Install the following tools:
+
 - Node.js
 - npm
 - PostgreSQL
 - Git
 - Postman
-- Stripe CLI (for local webhook testing)
+- Stripe CLI, for local webhook testing
 
 ### Clone the Repository
 
@@ -549,28 +530,57 @@ STRIPE_SECRET_KEY="YOUR_STRIPE_TEST_SECRET_KEY"
 STRIPE_WEBHOOK_SECRET="YOUR_STRIPE_WEBHOOK_SIGNING_SECRET"
 ```
 
-> 🔒 Never commit `.env`, database credentials, JWT secrets, Stripe secret keys, webhook secrets, access tokens, or Payment Intent client secrets.
+Never commit `.env`, database credentials, JWT secrets, Stripe secret keys, webhook secrets, access tokens, or Payment Intent client secrets.
 
 ---
 
 ## Database Setup
 
-| Action | Command |
-|---|---|
-| Generate Prisma Client | `npx prisma generate` |
-| Run development migrations | `npx prisma migrate dev` |
-| Run production migrations | `npx prisma migrate deploy` |
-| Open Prisma Studio | `npx prisma studio` |
+### Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+### Run Development Migrations
+
+```bash
+npx prisma migrate dev
+```
+
+### Run Production Migrations
+
+```bash
+npx prisma migrate deploy
+```
+
+### Open Prisma Studio
+
+```bash
+npx prisma studio
+```
 
 ---
 
 ## Run the Project
 
-| Mode | Command |
-|---|---|
-| Development | `npm run dev` |
-| Production build | `npm run build` |
-| Production start | `npm start` |
+### Development
+
+```bash
+npm run dev
+```
+
+### Production Build
+
+```bash
+npm run build
+```
+
+### Production Start
+
+```bash
+npm start
+```
 
 The local server runs at:
 
@@ -583,6 +593,8 @@ http://localhost:5000
 ## Stripe Webhook Testing
 
 ### Local Testing with Stripe CLI
+
+Log in to Stripe CLI:
 
 ```bash
 stripe login
@@ -637,13 +649,25 @@ The production webhook has been tested successfully with a signed Stripe event a
 
 ## Render Deployment Configuration
 
-| Setting | Value |
-|---|---|
-| **Region** | Singapore (Southeast Asia) |
-| **Build Command** | `npm install --include=dev && npx prisma generate && npm run build` |
-| **Start Command** | `npx prisma migrate deploy && npm start` |
+### Region
 
-**Required environment variables:**
+```text
+Singapore (Southeast Asia)
+```
+
+### Build Command
+
+```bash
+npm install --include=dev && npx prisma generate && npm run build
+```
+
+### Start Command
+
+```bash
+npx prisma migrate deploy && npm start
+```
+
+### Required Environment Variables
 
 ```text
 NODE_ENV
@@ -663,47 +687,99 @@ Render provides the `PORT` environment variable automatically, and the applicati
 
 ## Role Permissions
 
-| Capability | Customer | Technician | Admin |
-|---|:---:|:---:|:---:|
-| Register and log in | ✅ | ✅ | ✅ (fixed credentials) |
-| Retrieve own profile | ✅ | ✅ | — |
-| Browse services | ✅ | — | — |
-| Create / update / delete services | — | ✅ (owned) | — |
-| Create bookings | ✅ | — | — |
-| View bookings | ✅ (own) | ✅ (assigned) | ✅ (all) |
-| Accept / decline / progress bookings | — | ✅ | — |
-| Cancel bookings | ✅ | — | — |
-| Create Stripe Payment Intents | ✅ | — | — |
-| View payment history | ✅ (own) | — | ✅ (all) |
-| Submit / update / delete reviews | ✅ (owned) | — | — |
-| Manage categories | — | — | ✅ |
-| Block / unblock / soft-delete users | — | — | ✅ |
+### Customer
+
+- Register and log in
+- Retrieve own profile
+- Browse services
+- Create bookings
+- View own bookings
+- Cancel eligible bookings
+- Create Stripe Payment Intents
+- View payment history
+- Submit reviews for completed bookings
+- Update and delete owned reviews
+
+### Technician
+
+- Register and log in
+- Retrieve own profile
+- Create or update Technician profile
+- Create services
+- Update and delete owned services
+- View assigned bookings
+- Accept or decline requested bookings
+- Start paid bookings
+- Complete eligible bookings
+
+### Admin
+
+- Log in with the provided Admin credentials
+- Retrieve all users
+- Search and filter users
+- Block users
+- Unblock users
+- Soft delete users
+- Manage categories
+- Retrieve all bookings
+- Search and filter bookings
+- Retrieve all payments
+- Filter payments by status and provider
 
 ---
 
 ## Security Measures
 
-- JWT authentication with bcrypt password hashing
+- JWT authentication
+- bcrypt password hashing
 - Role-based route authorization
-- Server-side Zod validation for bodies, route params (UUID), and query strings
-- Blocked-user and deleted-user access prevention
+- Server-side Zod validation
+- UUID route parameter validation
+- Query string validation
+- Strict request-body validation
+- Blocked-user login prevention
+- Deleted-user access prevention
 - Old-token invalidation through database checks
-- Service, booking, and review ownership verification
-- Stripe webhook signature verification with safe acknowledgement of unknown test events
-- Structured JSON error and `404` responses
+- Service ownership verification
+- Booking ownership verification
+- Review ownership verification
+- Stripe webhook signature verification
+- Safe webhook acknowledgement for unknown Stripe test events
+- Structured JSON error responses
+- Structured JSON `404 Not Found` responses
 - Secrets excluded from source control and exported Postman files
 
 ---
 
 ## Validation Coverage
 
-The backend validates registration data, login credentials, email formatting, password strength, and user roles; Technician skills, experience, and hourly rates; category bodies and UUIDs; service titles, descriptions, prices, and filters; booking dates and status transitions; payment booking IDs; review ratings and comments; and search, filter, pagination, and Admin query parameters.
+The backend validates:
+
+- Registration data
+- Login credentials
+- Email formatting
+- Password strength
+- User roles
+- Technician skills
+- Technician experience
+- Technician hourly rates
+- Category bodies and UUIDs
+- Service titles, descriptions, prices, and filters
+- Booking dates and status transitions
+- Payment booking IDs
+- Review ratings and comments
+- Search parameters
+- Filter parameters
+- Pagination values
+- Admin query parameters
 
 ---
 
 ## Commit History
 
-The repository contains at least 20 meaningful backend commits with descriptive messages, for example:
+The repository contains at least 20 meaningful backend commits with descriptive messages.
+
+Examples:
 
 ```text
 feat: add technician profile management
@@ -725,7 +801,7 @@ A 3 to 5 minute API walkthrough video will be available here:
 ADD_DEMO_VIDEO_LINK_HERE
 ```
 
-**Recommended video coverage:**
+Recommended video coverage:
 
 1. Project overview and architecture
 2. Customer registration and login
@@ -748,14 +824,14 @@ ADD_DEMO_VIDEO_LINK_HERE
 
 ## Final Submission Summary
 
-| Item | Detail |
-|---|---|
-| **Backend Repo** | https://github.com/EbnulAhsan/FixItNow_Backend |
-| **Live API** | https://fixitnow-backend-rkod.onrender.com |
-| **API Docs** | `postman/FixItNow.postman_collection.json` |
-| **Demo Video** | `ADD_DEMO_VIDEO_LINK_HERE` |
-| **Admin Email** | `admin@fixitnow.com` |
-| **Admin Password** | `Admin1721` |
+```text
+Backend Repo     : https://github.com/EbnulAhsan/FixItNow_Backend
+Live API         : https://fixitnow-backend-rkod.onrender.com
+API Docs         : postman/FixItNow.postman_collection.json
+Demo Video       : ADD_DEMO_VIDEO_LINK_HERE
+Admin Email      : admin@fixitnow.com
+Admin Password   : Admin1721
+```
 
 ---
 
@@ -763,9 +839,7 @@ ADD_DEMO_VIDEO_LINK_HERE
 
 **MD. EBNUL AHSAN**
 
-
-
-[GitHub](https://github.com/EbnulAhsan)
+Backend Project for Assignment 4.
 
 ---
 
