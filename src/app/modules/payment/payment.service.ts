@@ -205,7 +205,11 @@ const completePaymentIntoDB = async (
     });
 
     if (!payment) {
-        throw new AppError(404, "Payment record not found");
+        console.warn(
+            `Ignoring payment_intent.succeeded for unknown Payment Intent: ${paymentIntentId}`
+        );
+
+        return null;
     }
 
 
@@ -283,7 +287,11 @@ const failPaymentIntoDB = async (
     });
 
     if (!payment) {
-        throw new AppError(404, "Payment record not found");
+        console.warn(
+            `Ignoring payment_intent.payment_failed for unknown Payment Intent: ${paymentIntentId}`
+        );
+
+        return null;
     }
 
 
