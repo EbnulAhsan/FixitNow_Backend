@@ -1,5 +1,3 @@
-
-
 // payment route
 
 import express from "express";
@@ -28,6 +26,12 @@ router.get(
 router.post(
     "/webhook",
     PaymentControllers.handleStripeWebhook
+);
+
+router.post(
+    "/confirm",
+    auth("CUSTOMER"),
+    PaymentControllers.confirmPayment
 );
 
 export const PaymentRoutes = router;

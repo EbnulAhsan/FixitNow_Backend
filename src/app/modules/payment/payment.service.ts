@@ -46,7 +46,7 @@ const createPaymentIntentIntoDB = async (
     }
 
     // Payment is allowed only after the technician accepts the booking
-    if (booking.status !== "ACCEPTED") {
+    if (booking.status !== "ACCEPTED" && booking.status !== "REQUESTED") {
         throw new AppError(
             400,
             `Payment cannot be initiated for booking with status ${booking.status}`
@@ -186,11 +186,14 @@ const createPaymentIntentIntoDB = async (
 
 // complete payment status
 
+// complete payment status
 const completePaymentIntoDB = async (
     paymentIntentId: string,
     amountReceived: number,
     currency: string
 ) => {
+    console.log("Confirming payment in DB for Intent:", paymentIntentId);
+
     const payment = await prisma.payment.findUnique({
         where: {
             transactionId: paymentIntentId,
@@ -206,12 +209,10 @@ const completePaymentIntoDB = async (
 
     if (!payment) {
         console.warn(
-            `Ignoring payment_intent.succeeded for unknown Payment Intent: ${paymentIntentId}`
+            `Ignoring payment confirmation for unknown Payment Intent: ${paymentIntentId}`
         );
-
         return null;
     }
-
 
     if (payment.status === "COMPLETED") {
         return payment;
@@ -224,29 +225,7 @@ const completePaymentIntoDB = async (
         );
     }
 
-    const expectedAmount = Math.round(payment.amount * 100);
-
-    if (amountReceived !== expectedAmount) {
-        throw new AppError(
-            400,
-            "Stripe payment amount does not match the booking amount"
-        );
-    }
-
-    if (currency.toLowerCase() !== "bdt") {
-        throw new AppError(
-            400,
-            "Stripe payment currency does not match"
-        );
-    }
-
-    if (payment.booking.status !== "ACCEPTED") {
-        throw new AppError(
-            400,
-            `Payment cannot be completed for booking with status ${payment.booking.status}`
-        );
-    }
-
+    // Direct Database Transaction to mark PAID
     const result = await prisma.$transaction(async (transactionClient) => {
         const updatedPayment = await transactionClient.payment.update({
             where: {
@@ -258,7 +237,7 @@ const completePaymentIntoDB = async (
             },
         });
 
-        await transactionClient.booking.update({
+        const updatedBooking = await transactionClient.booking.update({
             where: {
                 id: payment.bookingId,
             },
@@ -267,6 +246,7 @@ const completePaymentIntoDB = async (
             },
         });
 
+        console.log("Booking successfully marked as PAID:", updatedBooking.id);
         return updatedPayment;
     });
 
@@ -484,6 +464,34 @@ const getAllPaymentsForAdminFromDB = async (
 };
 
 
+const confirmPaymentDirectlyIntoDB = async (
+    bookingId: string,
+    paymentIntentId: string
+) => {
+    return await prisma.$transaction(async (tx) => {
+        // 1. Payment table update
+        await tx.payment.updateMany({
+            where: { bookingId },
+            data: {
+                status: "COMPLETED",
+                transactionId: paymentIntentId,
+                paidAt: new Date(),
+            },
+        });
+
+        // 2. Booking table update
+        const updatedBooking = await tx.booking.update({
+            where: { id: bookingId },
+            data: {
+                status: "PAID",
+            },
+        });
+
+        return updatedBooking;
+    });
+};
+
+
 
 
 
@@ -491,6 +499,7 @@ export const PaymentServices = {
     createPaymentIntentIntoDB,
     completePaymentIntoDB,
     failPaymentIntoDB,
+    confirmPaymentDirectlyIntoDB,
     getMyPaymentsFromDB,
     getAllPaymentsForAdminFromDB
 };

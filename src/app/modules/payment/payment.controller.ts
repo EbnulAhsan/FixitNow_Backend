@@ -115,11 +115,42 @@ const getAllPaymentsForAdmin = catchAsync(
 
 
 
+// confirm payment from user to the technician 
+// Confirm payment controller (direct frontend confirmation)
+const confirmPayment = catchAsync(
+    async (req: Request, res: Response) => {
+        const { bookingId, paymentIntentId } = req.body;
+
+        if (!bookingId || !paymentIntentId) {
+            throw new AppError(400, "Booking ID and Payment Intent ID are required");
+        }
+
+        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+        if (paymentIntent.status !== "succeeded") {
+            throw new AppError(400, "Payment has not succeeded yet");
+        }
+
+        const result = await PaymentServices.confirmPaymentDirectlyIntoDB(
+            bookingId,
+            paymentIntentId
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Payment confirmed and booking updated successfully",
+            data: result,
+        });
+    }
+);
+
+
 
 
 
 export const PaymentControllers = {
     createPaymentIntent,
+    confirmPayment,
     handleStripeWebhook,
     getMyPayments,
     getAllPaymentsForAdmin
