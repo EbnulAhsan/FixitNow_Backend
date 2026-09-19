@@ -4,29 +4,7 @@ import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 const techniciansData = [
-    {
-        name: 'Master Technician',
-        email: 'technician@example.com',
-        phone: '01711000099',
-        bio: 'Expert multi-disciplinary technician specialized in AC cooling, wiring, and sanitation.',
-        skills: ['AC Servicing', 'Electrical', 'Plumbing'],
-        experience: 5,
-        hourlyRate: 500,
-        services: [
-            {
-                categoryName: 'AC Repair',
-                title: 'AC Master Cleaning & Servicing',
-                description: 'Comprehensive indoor and outdoor unit jet wash, filter cleaning, and overall checkup.',
-                price: 1200,
-            },
-            {
-                categoryName: 'AC Repair',
-                title: 'AC Gas Refill & Leak Fix',
-                description: 'Full refrigerant top-up along with pipe inspection and high-pressure leak testing.',
-                price: 2500,
-            },
-        ],
-    },
+    // --- @fixitnow.com technicians ---
     {
         name: 'Abir Hasan',
         email: 'abir@fixitnow.com',
@@ -36,6 +14,12 @@ const techniciansData = [
         experience: 7,
         hourlyRate: 500,
         services: [
+            {
+                categoryName: 'AC Repair',
+                title: 'AC Master Cleaning & Servicing',
+                description: 'Comprehensive indoor and outdoor unit jet wash, filter cleaning, and overall checkup.',
+                price: 1200,
+            },
             {
                 categoryName: 'Carpentry',
                 title: 'Furniture Assembly & Lock Repair',
@@ -132,25 +116,61 @@ const techniciansData = [
         skills: ['Inverter AC', 'Gas Charging', 'Leak Test'],
         experience: 9,
         hourlyRate: 700,
+        services: [
+            {
+                categoryName: 'AC Repair',
+                title: 'AC Gas Refill & Leak Fix',
+                description: 'Full refrigerant top-up along with pipe inspection and high-pressure leak testing.',
+                price: 2500,
+            },
+        ],
+    },
+
+    // --- @example.com technicians ---
+    {
+        name: 'Tanvir Example',
+        email: 'tanvir@example.com',
+        phone: '01711000012',
+        bio: 'Expert electrician for home appliances, smart switches, and electrical circuitry.',
+        skills: ['Electrical Wiring', 'Socket Fitting'],
+        experience: 5,
+        hourlyRate: 500,
+        services: [],
+    },
+    {
+        name: 'Master Technician',
+        email: 'technician@example.com',
+        phone: '01711000099',
+        bio: 'Senior certified all-in-one home repair specialist.',
+        skills: ['AC Servicing', 'Electrical', 'Plumbing'],
+        experience: 6,
+        hourlyRate: 550,
+        services: [],
+    },
+    {
+        name: 'Abir Example',
+        email: 'abir@example.com',
+        phone: '01711000011',
+        bio: 'Cooling systems and carpentry repair expert.',
+        skills: ['AC Servicing', 'Carpentry'],
+        experience: 4,
+        hourlyRate: 450,
         services: [],
     },
 ];
 
 async function main() {
-    console.log('--- Starting Admin, Customer, Technician & Service Seeding ---');
+    console.log('--- Seeding Admin, Customer & Both Domain Technicians ---');
 
-    // ১. পাসওয়ার্ড হ্যাশ প্রস্তুত করা
+    // 1. Password hash create kora
     const adminPassword = await bcrypt.hash('Admin1721@', 10);
     const customerPassword = await bcrypt.hash('Customer123!', 10);
-    const defaultTechPassword = await bcrypt.hash('123456', 10);
+    const techDefaultPassword = await bcrypt.hash('123456', 10);
 
-    // ২. অ্যাডমিন তৈরি বা আপডেট
+    // 2. Admin User
     const admin = await prisma.user.upsert({
         where: { email: 'admin99@fixitnow.com' },
-        update: {
-            password: adminPassword,
-            role: 'ADMIN' as any,
-        },
+        update: { password: adminPassword, role: 'ADMIN' as any },
         create: {
             name: 'Super Admin',
             email: 'admin99@fixitnow.com',
@@ -160,13 +180,10 @@ async function main() {
     });
     console.log(`✅ Admin Ready: ${admin.email} (Password: Admin1721@)`);
 
-    // ৩. কাস্টমার তৈরি বা আপডেট
+    // 3. Customer User
     const customer = await prisma.user.upsert({
         where: { email: 'customer5@example.com' },
-        update: {
-            password: customerPassword,
-            role: 'CUSTOMER' as any,
-        },
+        update: { password: customerPassword, role: 'CUSTOMER' as any },
         create: {
             name: 'Sakib Customer',
             email: 'customer5@example.com',
@@ -176,18 +193,15 @@ async function main() {
     });
     console.log(`✅ Customer Ready: ${customer.email} (Password: Customer123!)`);
 
-    // ৪. টেকনিশিয়ান ও সার্ভিস সিডিং
+    // 4. Technicians & Services Seed
     for (const tech of techniciansData) {
         const user = await prisma.user.upsert({
             where: { email: tech.email },
-            update: {
-                password: defaultTechPassword,
-                role: 'TECHNICIAN' as any,
-            },
+            update: { password: techDefaultPassword, role: 'TECHNICIAN' as any },
             create: {
                 name: tech.name,
                 email: tech.email,
-                password: defaultTechPassword,
+                password: techDefaultPassword,
                 role: 'TECHNICIAN' as any,
             },
         });
@@ -234,24 +248,20 @@ async function main() {
                         categoryId: cat.id,
                     },
                 });
-                console.log(`  └─ Added Service: [${s.categoryName}] ${s.title}`);
             } else {
                 await prisma.service.update({
                     where: { id: existingService.id },
                     data: {
                         technicianId: profile.id,
                         categoryId: cat.id,
-                        price: s.price,
-                        description: s.description,
                     },
                 });
-                console.log(`  └─ Updated Service: ${s.title} to ${tech.name}`);
             }
         }
         console.log(`✅ Technician Ready: ${tech.email} (Password: 123456)`);
     }
 
-    console.log('--- Seeding Complete: Admin, Customer & Technicians are ready! ---');
+    console.log('--- All Users from Both Domains Seeded Successfully! ---');
 }
 
 main()
