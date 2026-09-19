@@ -2,152 +2,204 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function main() {
-    console.log('Clearing old data (if any)...');
-
-    // 1. Create or Find Technician User
-    let user = await prisma.user.findFirst({ where: { email: 'tech@fixitnow.com' } });
-    if (!user) {
-        user = await prisma.user.create({
-            data: {
-                name: 'Abir Hasan',
-                email: 'tech@fixitnow.com',
-                password: 'password123',
-                role: 'TECHNICIAN' as any,
+const techniciansData = [
+    {
+        name: 'Abir Hasan',
+        email: 'abir@fixitnow.com',
+        phone: '01711000001',
+        bio: 'Certified multi-disciplinary technician with 7+ years of experience in cooling and carpentry.',
+        skills: ['AC Servicing', 'Gas Refill', 'Furniture Assembly'],
+        experience: 7,
+        hourlyRate: 500,
+        services: [
+            {
+                categoryName: 'AC Repair',
+                title: 'AC Master Cleaning & Servicing',
+                description: 'Comprehensive indoor and outdoor unit jet wash, filter cleaning, and overall checkup.',
+                price: 1200,
             },
-        });
-    }
+            {
+                categoryName: 'Carpentry',
+                title: 'Furniture Assembly & Lock Repair',
+                description: 'Door lock replacement, hinge alignment, and flat-pack furniture assembly.',
+                price: 650,
+            },
+        ],
+    },
+    {
+        name: 'Tanvir Ahmed',
+        email: 'tanvir@fixitnow.com',
+        phone: '01711000002',
+        bio: 'Licensed electrical engineer & master electrician handling commercial and residential units.',
+        skills: ['Electrical Wiring', 'Switchboard Setup', 'Fan Fixture'],
+        experience: 6,
+        hourlyRate: 600,
+        services: [
+            {
+                categoryName: 'Electrical',
+                title: 'Switchboard & Socket Installation',
+                description: 'Safe wiring, breaker verification, and modular switch socket installation.',
+                price: 450,
+            },
+            {
+                categoryName: 'Electrical',
+                title: 'Ceiling Fan & Light Fixture Setup',
+                description: 'Ceiling fan mounting, chandelier hanging, and smart LED fixture setup.',
+                price: 600,
+            },
+        ],
+    },
+    {
+        name: 'Rafiqul Islam',
+        email: 'rafiq@fixitnow.com',
+        phone: '01711000003',
+        bio: 'Expert master plumber with deep experience in sanitary fittings and leakage detection.',
+        skills: ['Pipe Fitting', 'Sanitary Work', 'Leak Detection'],
+        experience: 8,
+        hourlyRate: 550,
+        services: [
+            {
+                categoryName: 'Plumbing',
+                title: 'Water Leakage & Pipe Repair',
+                description: 'Fixing ruptured pipelines, concealed pipe leakage detection, and faucet replacements.',
+                price: 700,
+            },
+            {
+                categoryName: 'Plumbing',
+                title: 'Bathroom Commode & Basin Fitting',
+                description: 'Installation of sanitary fittings, commodes, flush mechanisms, and sink basins.',
+                price: 1500,
+            },
+        ],
+    },
+    {
+        name: 'Mahbub Alam',
+        email: 'mahbub@fixitnow.com',
+        phone: '01711000004',
+        bio: 'Professional wall painter and finishing expert using modern weather and acrylic coats.',
+        skills: ['Wall Painting', 'Waterproofing', 'Texture Paint'],
+        experience: 5,
+        hourlyRate: 450,
+        services: [
+            {
+                categoryName: 'Painting',
+                title: 'Interior Wall Painting & Touch-up',
+                description: 'Premium acrylic paint finish with surface smoothing, primer, and double coat application.',
+                price: 3500,
+            },
+        ],
+    },
+    {
+        name: 'Farhana Akter',
+        email: 'farhana@fixitnow.com',
+        phone: '01711000005',
+        bio: 'Professional home hygiene and deep sanitation specialist trained in eco-friendly chemical tools.',
+        skills: ['Deep Cleaning', 'Sanitization', 'Pest Control'],
+        experience: 4,
+        hourlyRate: 400,
+        services: [
+            {
+                categoryName: 'Cleaning',
+                title: 'Deep Kitchen & Bathroom Cleaning',
+                description: 'Anti-bacterial steam cleaning, grease removal, floor scrubbing, and sanitization.',
+                price: 1800,
+            },
+        ],
+    },
+    {
+        name: 'Sabbir Hossain',
+        email: 'sabbir@fixitnow.com',
+        phone: '01711000006',
+        bio: 'Specialist in commercial cooling, inverter AC troubleshooting, and heavy compressor overhaul.',
+        skills: ['Inverter AC', 'Gas Charging', 'Leak Test'],
+        experience: 9,
+        hourlyRate: 700,
+        services: [
+            {
+                categoryName: 'AC Repair',
+                title: 'AC Gas Refill & Leak Fix',
+                description: 'Full refrigerant top-up along with pipe inspection and high-pressure leak testing.',
+                price: 2500,
+            },
+        ],
+    },
+];
 
-    // 2. Create or Find Technician Profile
-    const profile = await prisma.technicianProfile.upsert({
-        where: { userId: user.id },
-        update: {},
-        create: {
-            userId: user.id,
-            bio: 'Certified multi-disciplinary technician with 7+ years of experience across appliances and home repairs.',
-            skills: ['AC Servicing', 'Electrical Wiring', 'Plumbing', 'Painting', 'Carpentry'],
-            experience: 7,
-            hourlyRate: 500,
-        },
-    });
+async function main() {
+    console.log('--- Starting Technician & Service Seeding ---');
 
-    // 3. Category wise all services list
-    const seedData = [
-        {
-            categoryName: 'AC Repair',
-            services: [
-                {
-                    title: 'AC Master Cleaning & Servicing',
-                    description: 'Comprehensive indoor and outdoor unit jet wash, filter cleaning, and overall checkup.',
-                    price: 1200,
+    for (const tech of techniciansData) {
+        // ১. টেকনিশিয়ান ইউজার তৈরি বা খুঁজে নেওয়া
+        let user = await prisma.user.findFirst({ where: { email: tech.email } });
+        if (!user) {
+            user = await prisma.user.create({
+                data: {
+                    name: tech.name,
+                    email: tech.email,
+                    password: 'password123',
+                    role: 'TECHNICIAN' as any,
                 },
-                {
-                    title: 'AC Gas Refill & Leak Fix',
-                    description: 'Full refrigerant top-up along with pipe inspection and high-pressure leak testing.',
-                    price: 2500,
-                },
-            ],
-        },
-        {
-            categoryName: 'Electrical',
-            services: [
-                {
-                    title: 'Switchboard & Socket Installation',
-                    description: 'Safe wiring, breaker verification, and modular switch socket installation.',
-                    price: 450,
-                },
-                {
-                    title: 'Ceiling Fan & Light Fixture Setup',
-                    description: 'Ceiling fan mounting, chandelier hanging, and smart LED fixture setup.',
-                    price: 600,
-                },
-            ],
-        },
-        {
-            categoryName: 'Plumbing',
-            services: [
-                {
-                    title: 'Water Leakage & Pipe Repair',
-                    description: 'Fixing ruptured pipelines, concealed pipe leakage detection, and faucet replacements.',
-                    price: 700,
-                },
-                {
-                    title: 'Bathroom Commode & Basin Fitting',
-                    description: 'Installation of sanitary fittings, commodes, flush mechanisms, and sink basins.',
-                    price: 1500,
-                },
-            ],
-        },
-        {
-            categoryName: 'Painting',
-            services: [
-                {
-                    title: 'Interior Wall Painting & Touch-up',
-                    description: 'Premium acrylic paint finish with surface smoothing, primer, and double coat application.',
-                    price: 3500,
-                },
-            ],
-        },
-        {
-            categoryName: 'Cleaning',
-            services: [
-                {
-                    title: 'Deep Kitchen & Bathroom Cleaning',
-                    description: 'Anti-bacterial steam cleaning, grease removal, floor scrubbing, and sanitization.',
-                    price: 1800,
-                },
-            ],
-        },
-        {
-            categoryName: 'Carpentry',
-            services: [
-                {
-                    title: 'Furniture Assembly & Lock Repair',
-                    description: 'Door lock replacement, hinge alignment, and flat-pack furniture assembly.',
-                    price: 650,
-                },
-            ],
-        },
-    ];
-
-    console.log('Seeding categories and services...');
-
-    for (const group of seedData) {
-        // Find or create category
-        let cat = await prisma.category.findFirst({
-            where: { name: { equals: group.categoryName, mode: 'insensitive' } },
-        });
-
-        if (!cat) {
-            cat = await prisma.category.create({
-                data: { name: group.categoryName },
             });
+            console.log(`+ Created User: ${tech.name}`);
         }
 
-        for (const item of group.services) {
-            // Check if service already exists
+        // ২. টেকনিশিয়ান প্রোফাইল তৈরি বা আপডেট
+        const profile = await prisma.technicianProfile.upsert({
+            where: { userId: user.id },
+            update: {
+                bio: tech.bio,
+                skills: tech.skills,
+                experience: tech.experience,
+                hourlyRate: tech.hourlyRate,
+            },
+            create: {
+                userId: user.id,
+                bio: tech.bio,
+                skills: tech.skills,
+                experience: tech.experience,
+                hourlyRate: tech.hourlyRate,
+            },
+        });
+
+        // ৩. সার্ভিস ও ক্যাটাগরি তৈরি বা টেকনিশিয়ানের সাথে লিংক
+        for (const s of tech.services) {
+            let cat = await prisma.category.findFirst({
+                where: { name: { equals: s.categoryName, mode: 'insensitive' } },
+            });
+
+            if (!cat) {
+                cat = await prisma.category.create({
+                    data: { name: s.categoryName },
+                });
+            }
+
             const existingService = await prisma.service.findFirst({
-                where: { title: item.title },
+                where: { title: s.title },
             });
 
             if (!existingService) {
                 await prisma.service.create({
                     data: {
-                        title: item.title,
-                        description: item.description,
-                        price: item.price,
+                        title: s.title,
+                        description: s.description,
+                        price: s.price,
                         technicianId: profile.id,
                         categoryId: cat.id,
                     },
                 });
-                console.log(`+ Added: [${group.categoryName}] ${item.title}`);
+                console.log(`  └─ Added Service: ${s.title}`);
             } else {
-                console.log(`= Already exists: ${item.title}`);
+                // পূর্বে থাকা সার্ভিস নতুন টেকনিশিয়ানের সাথে আপডেট করা
+                await prisma.service.update({
+                    where: { id: existingService.id },
+                    data: { technicianId: profile.id },
+                });
+                console.log(`  └─ Linked Existing Service: ${s.title} to ${tech.name}`);
             }
         }
     }
 
-    console.log('Successfully seeded all services into Neon Database!');
+    console.log('--- Seeding Complete: All Technicians & Services Ready! ---');
 }
 
 main()
