@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -126,24 +127,48 @@ const techniciansData = [
 ];
 
 async function main() {
-    console.log('--- Starting Technician & Service Seeding ---');
+    console.log('--- Starting Admin, Technician & Service Seeding ---');
 
+    // 1. Password hash create
+    const defaultTechPassword = await bcrypt.hash('password123', 10);
+    const adminPassword = await bcrypt.hash('Admin1721@', 10);
+
+    // 2. Admin User Create / Update
+    const admin = await prisma.user.upsert({
+        where: { email: 'admin99@fixitnow.com' },
+        update: {
+            password: adminPassword,
+            role: 'ADMIN' as any,
+        },
+        create: {
+            name: 'Super Admin',
+            email: 'admin99@fixitnow.com',
+            password: adminPassword,
+            role: 'ADMIN' as any,
+        },
+    });
+    console.log(`✅ Admin Ready: ${admin.email} (Password: Admin1721@)`);
+
+    // 3. Technicians & Services Seed
     for (const tech of techniciansData) {
-        // ১. টেকনিশিয়ান ইউজার তৈরি বা খুঁজে নেওয়া
         let user = await prisma.user.findFirst({ where: { email: tech.email } });
         if (!user) {
             user = await prisma.user.create({
                 data: {
                     name: tech.name,
                     email: tech.email,
-                    password: 'password123',
+                    password: defaultTechPassword,
                     role: 'TECHNICIAN' as any,
                 },
             });
-            console.log(`+ Created User: ${tech.name}`);
+            console.log(`+ Created Technician User: ${tech.name}`);
+        } else {
+            await prisma.user.update({
+                where: { id: user.id },
+                data: { password: defaultTechPassword, role: 'TECHNICIAN' as any },
+            });
         }
 
-        // ২. টেকনিশিয়ান প্রোফাইল তৈরি বা আপডেট
         const profile = await prisma.technicianProfile.upsert({
             where: { userId: user.id },
             update: {
@@ -161,7 +186,6 @@ async function main() {
             },
         });
 
-        // ৩. সার্ভিস ও ক্যাটাগরি তৈরি বা টেকনিশিয়ানের সাথে লিংক
         for (const s of tech.services) {
             let cat = await prisma.category.findFirst({
                 where: { name: { equals: s.categoryName, mode: 'insensitive' } },
@@ -189,17 +213,21 @@ async function main() {
                 });
                 console.log(`  └─ Added Service: ${s.title}`);
             } else {
-                // পূর্বে থাকা সার্ভিস নতুন টেকনিশিয়ানের সাথে আপডেট করা
                 await prisma.service.update({
                     where: { id: existingService.id },
-                    data: { technicianId: profile.id },
+                    data: {
+                        technicianId: profile.id,
+                        categoryId: cat.id,
+                        price: s.price,
+                        description: s.description,
+                    },
                 });
-                console.log(`  └─ Linked Existing Service: ${s.title} to ${tech.name}`);
+                console.log(`  └─ Updated Service: ${s.title} to ${tech.name}`);
             }
         }
     }
 
-    console.log('--- Seeding Complete: All Technicians & Services Ready! ---');
+    console.log('--- Seeding Complete: Admin, Technicians & Services are fully synced! ---');
 }
 
 main()
