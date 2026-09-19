@@ -165,7 +165,7 @@ async function main() {
     // 1. Password hash create kora
     const adminPassword = await bcrypt.hash('Admin1721@', 10);
     const customerPassword = await bcrypt.hash('Customer123!', 10);
-    const techDefaultPassword = await bcrypt.hash('123456', 10);
+    const TechPassword = await bcrypt.hash('Technician123!', 10);
 
     // 2. Admin User
     const admin = await prisma.user.upsert({
@@ -197,11 +197,11 @@ async function main() {
     for (const tech of techniciansData) {
         const user = await prisma.user.upsert({
             where: { email: tech.email },
-            update: { password: techDefaultPassword, role: 'TECHNICIAN' as any },
+            update: { password: TechPassword, role: 'TECHNICIAN' as any },
             create: {
                 name: tech.name,
                 email: tech.email,
-                password: techDefaultPassword,
+                password: TechPassword,
                 role: 'TECHNICIAN' as any,
             },
         });
