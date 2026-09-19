@@ -21,22 +21,14 @@ const registerValidationSchema = z.object({
                     message: "Invalid email address",
                 }),
 
+            // যেকেনো সাধারণ পাসওয়ার্ড এলাউ করার জন্য রেজেক্স বাদ দেওয়া হয়েছে
             password: z
                 .string()
-                .min(8, {
-                    message: "Password must be at least 8 characters",
+                .min(4, {
+                    message: "Password must be at least 4 characters",
                 })
                 .max(72, {
                     message: "Password cannot exceed 72 characters",
-                })
-                .regex(/[a-z]/, {
-                    message: "Password must contain a lowercase letter",
-                })
-                .regex(/[A-Z]/, {
-                    message: "Password must contain an uppercase letter",
-                })
-                .regex(/[0-9]/, {
-                    message: "Password must contain a number",
                 }),
 
             role: z.enum(
