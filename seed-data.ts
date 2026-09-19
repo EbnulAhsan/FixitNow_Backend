@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 
 const techniciansData = [
     {
-        name: 'Abir Hasan',
-        email: 'abir@fixitnow.com',
-        phone: '01711000001',
-        bio: 'Certified multi-disciplinary technician with 7+ years of experience in cooling and carpentry.',
-        skills: ['AC Servicing', 'Gas Refill', 'Furniture Assembly'],
-        experience: 7,
+        name: 'Master Technician',
+        email: 'technician@example.com',
+        phone: '01711000099',
+        bio: 'Expert multi-disciplinary technician specialized in AC cooling, wiring, and sanitation.',
+        skills: ['AC Servicing', 'Electrical', 'Plumbing'],
+        experience: 5,
         hourlyRate: 500,
         services: [
             {
@@ -19,6 +19,23 @@ const techniciansData = [
                 description: 'Comprehensive indoor and outdoor unit jet wash, filter cleaning, and overall checkup.',
                 price: 1200,
             },
+            {
+                categoryName: 'AC Repair',
+                title: 'AC Gas Refill & Leak Fix',
+                description: 'Full refrigerant top-up along with pipe inspection and high-pressure leak testing.',
+                price: 2500,
+            },
+        ],
+    },
+    {
+        name: 'Abir Hasan',
+        email: 'abir@fixitnow.com',
+        phone: '01711000001',
+        bio: 'Certified multi-disciplinary technician with 7+ years of experience in cooling and carpentry.',
+        skills: ['AC Servicing', 'Gas Refill', 'Furniture Assembly'],
+        experience: 7,
+        hourlyRate: 500,
+        services: [
             {
                 categoryName: 'Carpentry',
                 title: 'Furniture Assembly & Lock Repair',
@@ -115,25 +132,19 @@ const techniciansData = [
         skills: ['Inverter AC', 'Gas Charging', 'Leak Test'],
         experience: 9,
         hourlyRate: 700,
-        services: [
-            {
-                categoryName: 'AC Repair',
-                title: 'AC Gas Refill & Leak Fix',
-                description: 'Full refrigerant top-up along with pipe inspection and high-pressure leak testing.',
-                price: 2500,
-            },
-        ],
+        services: [],
     },
 ];
 
 async function main() {
-    console.log('--- Starting Admin, Technician & Service Seeding ---');
+    console.log('--- Starting Admin, Customer, Technician & Service Seeding ---');
 
-    // 1. Password hash create
-    const defaultTechPassword = await bcrypt.hash('password123', 10);
+    // ১. পাসওয়ার্ড হ্যাশ প্রস্তুত করা
     const adminPassword = await bcrypt.hash('Admin1721@', 10);
+    const customerPassword = await bcrypt.hash('Customer123!', 10);
+    const defaultTechPassword = await bcrypt.hash('123456', 10);
 
-    // 2. Admin User Create / Update
+    // ২. অ্যাডমিন তৈরি বা আপডেট
     const admin = await prisma.user.upsert({
         where: { email: 'admin99@fixitnow.com' },
         update: {
@@ -149,25 +160,37 @@ async function main() {
     });
     console.log(`✅ Admin Ready: ${admin.email} (Password: Admin1721@)`);
 
-    // 3. Technicians & Services Seed
+    // ৩. কাস্টমার তৈরি বা আপডেট
+    const customer = await prisma.user.upsert({
+        where: { email: 'customer5@example.com' },
+        update: {
+            password: customerPassword,
+            role: 'CUSTOMER' as any,
+        },
+        create: {
+            name: 'Sakib Customer',
+            email: 'customer5@example.com',
+            password: customerPassword,
+            role: 'CUSTOMER' as any,
+        },
+    });
+    console.log(`✅ Customer Ready: ${customer.email} (Password: Customer123!)`);
+
+    // ৪. টেকনিশিয়ান ও সার্ভিস সিডিং
     for (const tech of techniciansData) {
-        let user = await prisma.user.findFirst({ where: { email: tech.email } });
-        if (!user) {
-            user = await prisma.user.create({
-                data: {
-                    name: tech.name,
-                    email: tech.email,
-                    password: defaultTechPassword,
-                    role: 'TECHNICIAN' as any,
-                },
-            });
-            console.log(`+ Created Technician User: ${tech.name}`);
-        } else {
-            await prisma.user.update({
-                where: { id: user.id },
-                data: { password: defaultTechPassword, role: 'TECHNICIAN' as any },
-            });
-        }
+        const user = await prisma.user.upsert({
+            where: { email: tech.email },
+            update: {
+                password: defaultTechPassword,
+                role: 'TECHNICIAN' as any,
+            },
+            create: {
+                name: tech.name,
+                email: tech.email,
+                password: defaultTechPassword,
+                role: 'TECHNICIAN' as any,
+            },
+        });
 
         const profile = await prisma.technicianProfile.upsert({
             where: { userId: user.id },
@@ -211,7 +234,7 @@ async function main() {
                         categoryId: cat.id,
                     },
                 });
-                console.log(`  └─ Added Service: ${s.title}`);
+                console.log(`  └─ Added Service: [${s.categoryName}] ${s.title}`);
             } else {
                 await prisma.service.update({
                     where: { id: existingService.id },
@@ -225,9 +248,10 @@ async function main() {
                 console.log(`  └─ Updated Service: ${s.title} to ${tech.name}`);
             }
         }
+        console.log(`✅ Technician Ready: ${tech.email} (Password: 123456)`);
     }
 
-    console.log('--- Seeding Complete: Admin, Technicians & Services are fully synced! ---');
+    console.log('--- Seeding Complete: Admin, Customer & Technicians are ready! ---');
 }
 
 main()
