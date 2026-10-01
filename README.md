@@ -4,14 +4,13 @@
 
 **A production-ready, role-based home service marketplace backend**
 
-[![CI/CD](https://github.com/EbnulAhsan/FixItNow_Backend/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/EbnulAhsan/FixItNow_Backend/actions)
+[![CI/CD](https://github.com/EbnulAhsan/FixItNow_Backend/actions/workflows/backend-ci-cd.yml/badge.svg)](https://github.com/EbnulAhsan/FixItNow_Backend/actions)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-5-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat&logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![Stripe](https://img.shields.io/badge/Stripe-Payments-635BFF?style=flat&logo=stripe&logoColor=white)](https://stripe.com/)
-[![GitHub Actions](https://img.shields.io/badge/CI/CD-GitHub_Actions-2088FF?style=flat&logo=githubactions&logoColor=white)](https://github.com/features/actions)
 [![Deployed on Render](https://img.shields.io/badge/Deployed-Render-46E3B7?style=flat&logo=render&logoColor=white)](https://render.com/)
 [![License](https://img.shields.io/badge/License-Educational-lightgrey?style=flat)](#license)
 
@@ -669,7 +668,7 @@ flowchart LR
 ### Workflow File
 
 ```text
-.github/workflows/ci-cd.yml
+.github/workflows/backend-ci-cd.yml
 ```
 
 ### Triggers
@@ -858,7 +857,7 @@ ADD_DEMO_VIDEO_LINK_HERE
 | **Backend Repo** | https://github.com/EbnulAhsan/FixItNow_Backend |
 | **Live API** | https://fixitnow-backend-rkod.onrender.com |
 | **API Docs** | `postman/FixItNow.postman_collection.json` |
-| **CI/CD** | GitHub Actions (`.github/workflows/ci-cd.yml`) → Render |
+| **CI/CD** | GitHub Actions (`.github/workflows/backend-ci-cd.yml`) → Render |
 | **Demo Video** | `ADD_DEMO_VIDEO_LINK_HERE` |
 | **Admin Email** | `admin@fixitnow.com` |
 | **Admin Password** | `Admin1721` |
