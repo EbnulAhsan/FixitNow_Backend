@@ -4,16 +4,18 @@
 
 **A production-ready, role-based home service marketplace backend**
 
+[![CI/CD](https://github.com/EbnulAhsan/FixItNow_Backend/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/EbnulAhsan/FixItNow_Backend/actions)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-5-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat&logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![Stripe](https://img.shields.io/badge/Stripe-Payments-635BFF?style=flat&logo=stripe&logoColor=white)](https://stripe.com/)
+[![GitHub Actions](https://img.shields.io/badge/CI/CD-GitHub_Actions-2088FF?style=flat&logo=githubactions&logoColor=white)](https://github.com/features/actions)
 [![Deployed on Render](https://img.shields.io/badge/Deployed-Render-46E3B7?style=flat&logo=render&logoColor=white)](https://render.com/)
 [![License](https://img.shields.io/badge/License-Educational-lightgrey?style=flat)](#license)
 
-[Live API](#live-api-base-url) · [Postman Collection](#api-documentation) · [Endpoints](#api-endpoints) · [Local Setup](#local-installation)
+[Live API](#live-api-base-url) · [Postman Collection](#api-documentation) · [Endpoints](#api-endpoints) · [CI/CD](#cicd-pipeline) · [Local Setup](#local-installation)
 
 </div>
 
@@ -22,7 +24,7 @@
 
 FixItNow is a production-ready, role-based home service marketplace backend built with **Node.js, Express, TypeScript, PostgreSQL, Prisma, JWT, Zod, and Stripe**. The platform connects **Customers** with **Technicians**, while giving **Administrators** secure tools for managing users, categories, bookings, and payments.
 
-The project ships with complete REST API documentation, server-side validation, structured JSON error handling, role-based authorization, real Stripe Payment Intent processing, signed Stripe webhook verification, deployment on Render, and a production PostgreSQL database.
+The project ships with complete REST API documentation, server-side validation, structured JSON error handling, role-based authorization, real Stripe Payment Intent processing, signed Stripe webhook verification, an automated **CI/CD pipeline with GitHub Actions**, deployment on Render, and a production PostgreSQL database.
 
 ## Table of Contents
 
@@ -42,6 +44,7 @@ The project ships with complete REST API documentation, server-side validation, 
 - [Database Setup](#database-setup)
 - [Run the Project](#run-the-project)
 - [Stripe Webhook Testing](#stripe-webhook-testing)
+- [CI/CD Pipeline](#cicd-pipeline)
 - [Render Deployment Configuration](#render-deployment-configuration)
 - [Role Permissions](#role-permissions)
 - [Security Measures](#security-measures)
@@ -61,7 +64,8 @@ The project ships with complete REST API documentation, server-side validation, 
 | **Backend Repository** | [github.com/EbnulAhsan/FixItNow_Backend](https://github.com/EbnulAhsan/FixItNow_Backend) |
 | **Live API** | [fixitnow-backend-rkod.onrender.com](https://fixitnow-backend-rkod.onrender.com) |
 | **Health Check** | [fixitnow-backend-rkod.onrender.com/](https://fixitnow-backend-rkod.onrender.com/) |
-| **Postman Collection** | [https://github.com/EbnulAhsan/FixitNow_Backend/blob/main/postman/fixitNow.postman_collection.json |
+| **Postman Collection** | [postman/FixItNow.postman_collection.json](https://github.com/EbnulAhsan/FixItNow_Backend/blob/main/postman/FixItNow.postman_collection.json) |
+| **CI/CD Workflow** | [GitHub Actions](https://github.com/EbnulAhsan/FixItNow_Backend/actions) |
 | **Demo Video** | `ADD_DEMO_VIDEO_LINK_HERE` |
 
 > ⚠️ The Render free instance may take a short time to wake up after inactivity.
@@ -145,6 +149,7 @@ flowchart LR
 | Live API deployment on Render | ✅ |
 | Production PostgreSQL database | ✅ |
 | Production Stripe webhook endpoint | ✅ |
+| Automated CI/CD pipeline (GitHub Actions) | ✅ |
 | Demo video link | ⬜ |
 
 ---
@@ -248,6 +253,14 @@ FixItNow uses **Stripe Test Mode** for real payment processing — no Cash on De
 - Retrieve and filter all payments by status and provider
 - Paginated Admin responses
 
+### 🚀 CI/CD Automation
+
+- GitHub Actions workflow runs on every push and pull request
+- Automated install, Prisma client generation, type-check, build, and tests
+- Automatic production deployment to Render after all checks pass on `main`
+- Automatic database migrations on every release
+- Post-deployment health check of the live API
+
 ---
 
 ## Technology Stack
@@ -258,7 +271,8 @@ FixItNow uses **Stripe Test Mode** for real payment processing — no Cash on De
 | **Database** | PostgreSQL, Prisma ORM, Render PostgreSQL |
 | **Auth & Security** | JSON Web Token, bcrypt, role-based authorization middleware, database-level account status checks |
 | **Validation & Errors** | Zod, body/param/query validation, structured JSON errors, JSON `404` handler |
-| **Payments & Deployment** | Stripe Payment Intents, Stripe signed webhooks, Stripe CLI, Render Web Service, Postman |
+| **Payments** | Stripe Payment Intents, Stripe signed webhooks, Stripe CLI |
+| **CI/CD & Deployment** | GitHub Actions, Render Web Service, Render Deploy Hook, Postman |
 
 ---
 
@@ -635,6 +649,95 @@ The production webhook has been tested successfully with a signed Stripe event a
 
 ---
 
+## CI/CD Pipeline
+
+FixItNow uses a fully automated **CI/CD pipeline with GitHub Actions**. Every push and pull request is validated automatically, and every successful merge to `main` is deployed to production on Render.
+
+```mermaid
+flowchart LR
+    A[Push / Pull Request] --> B[Install Dependencies]
+    B --> C[Prisma Generate]
+    C --> D[Lint & Type Check]
+    D --> E[Build]
+    E --> F[Test]
+    F -->|main branch only| G[Deploy Hook]
+    G --> H[Render Build & Deploy]
+    H --> I[prisma migrate deploy]
+    I --> J[Health Check]
+```
+
+### Workflow File
+
+```text
+.github/workflows/ci-cd.yml
+```
+
+### Triggers
+
+| Event | Branch | Action |
+|---|---|---|
+| `push` | `main` | Run CI, then deploy to production |
+| `pull_request` | `main` | Run CI only (no deployment) |
+
+### Pipeline Stages
+
+| Stage | Description |
+|---|---|
+| **Checkout** | Pulls the latest source code |
+| **Setup Node.js** | Installs Node.js with npm dependency caching |
+| **Install** | `npm ci` for clean, reproducible installs |
+| **Prisma Generate** | `npx prisma generate` to build the Prisma Client |
+| **Lint / Type Check** | `npx tsc --noEmit` catches TypeScript errors |
+| **Build** | `npm run build` compiles TypeScript to JavaScript |
+| **Test** | Runs the automated test suite |
+| **Deploy** | Triggers the Render Deploy Hook (`main` only, after all checks pass) |
+| **Post-deploy Check** | Verifies the live API health endpoint responds |
+
+### Continuous Integration (CI)
+
+On every push and pull request, the pipeline:
+
+1. Installs dependencies with `npm ci`
+2. Generates the Prisma Client
+3. Type-checks and builds the project
+4. Runs tests
+
+If any stage fails, the pipeline stops, the change is flagged, and nothing is deployed.
+
+### Continuous Deployment (CD)
+
+When CI passes on `main`:
+
+1. GitHub Actions calls the **Render Deploy Hook**
+2. Render runs the build command: `npm install --include=dev && npx prisma generate && npm run build`
+3. Render runs the start command: `npx prisma migrate deploy && npm start`, applying pending database migrations automatically
+4. The new version goes live at `https://fixitnow-backend-rkod.onrender.com`
+
+### Required GitHub Secrets
+
+Add these under **Repository → Settings → Secrets and variables → Actions**:
+
+| Secret | Purpose |
+|---|---|
+| `RENDER_DEPLOY_HOOK_URL` | Render Deploy Hook URL that triggers production deployment |
+| `DATABASE_URL` | Test/CI database connection (if tests need a database) |
+| `JWT_ACCESS_SECRET` | Used by the test environment |
+| `JWT_REFRESH_SECRET` | Used by the test environment |
+| `STRIPE_SECRET_KEY` | Stripe **test** key for the test environment |
+| `STRIPE_WEBHOOK_SECRET` | Stripe test webhook signing secret |
+
+> 🔒 Secrets are stored only in GitHub Actions and Render. They are never committed to the repository or printed in logs.
+
+### Benefits
+
+- Broken code never reaches production
+- Zero-touch, repeatable deployments
+- Database migrations are applied automatically on each release
+- Faster feedback on every pull request
+- Consistent builds across local, CI, and production environments
+
+---
+
 ## Render Deployment Configuration
 
 | Setting | Value |
@@ -691,7 +794,7 @@ Render provides the `PORT` environment variable automatically, and the applicati
 - Service, booking, and review ownership verification
 - Stripe webhook signature verification with safe acknowledgement of unknown test events
 - Structured JSON error and `404` responses
-- Secrets excluded from source control and exported Postman files
+- Secrets excluded from source control, exported Postman files, and CI logs (stored as GitHub Actions secrets)
 
 ---
 
@@ -713,6 +816,7 @@ fix: return consistent HTTP status and structured 404 errors
 fix: strengthen admin and service input validation
 fix: safely acknowledge webhooks for unknown payments
 docs: add complete Postman API collection
+ci: add GitHub Actions CI/CD pipeline with Render deployment
 ```
 
 ---
@@ -742,7 +846,8 @@ ADD_DEMO_VIDEO_LINK_HERE
 13. Review workflow
 14. Admin User, Booking, and Payment Management
 15. Validation and authorization errors
-16. One technical challenge and its solution
+16. CI/CD pipeline run and automatic deployment
+17. One technical challenge and its solution
 
 ---
 
@@ -753,6 +858,7 @@ ADD_DEMO_VIDEO_LINK_HERE
 | **Backend Repo** | https://github.com/EbnulAhsan/FixItNow_Backend |
 | **Live API** | https://fixitnow-backend-rkod.onrender.com |
 | **API Docs** | `postman/FixItNow.postman_collection.json` |
+| **CI/CD** | GitHub Actions (`.github/workflows/ci-cd.yml`) → Render |
 | **Demo Video** | `ADD_DEMO_VIDEO_LINK_HERE` |
 | **Admin Email** | `admin@fixitnow.com` |
 | **Admin Password** | `Admin1721` |
